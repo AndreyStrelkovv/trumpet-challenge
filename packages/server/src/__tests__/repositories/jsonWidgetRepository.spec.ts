@@ -48,4 +48,38 @@ describe("JsonWidgetRepository", () => {
   it("remove throws NotFoundError for unknown id", () => {
     expect(() => repo.remove(999)).toThrow(NotFoundError)
   })
+
+  it("create sets createdAt and updatedAt", () => {
+    const w = repo.create()
+    expect(w.createdAt).toBeInstanceOf(Date)
+    expect(w.updatedAt).toBeInstanceOf(Date)
+  })
+
+  it("create with docType persists it", () => {
+    const w = repo.create("DOC_TYPE_1")
+    expect(w.docType).toBe("DOC_TYPE_1")
+    const found = repo.findById(w.id)
+    expect(found?.docType).toBe("DOC_TYPE_1")
+  })
+
+  it("create without docType leaves it undefined", () => {
+    const w = repo.create()
+    expect(w.docType).toBeUndefined()
+  })
+
+  it("save persists docType changes", () => {
+    const w = repo.create()
+    w.updateDocType("DOC_TYPE_2")
+    repo.save(w)
+    const found = repo.findById(w.id)
+    expect(found?.docType).toBe("DOC_TYPE_2")
+  })
+
+  it("save persists docType clearing", () => {
+    const w = repo.create("DOC_TYPE_1")
+    w.updateDocType(undefined)
+    repo.save(w)
+    const found = repo.findById(w.id)
+    expect(found?.docType).toBeUndefined()
+  })
 })

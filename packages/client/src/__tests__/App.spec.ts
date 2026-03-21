@@ -5,6 +5,8 @@ import App from "../App.vue"
 const fetchMock = vi.fn()
 vi.stubGlobal("fetch", fetchMock)
 
+const now = "2026-01-01T00:00:00.000Z"
+
 describe("App", () => {
   beforeEach(() => {
     fetchMock.mockReset()
@@ -13,13 +15,18 @@ describe("App", () => {
   it("fetches and renders widgets on mount", async () => {
     fetchMock.mockResolvedValueOnce({
       ok: true,
-      json: () => Promise.resolve([{ id: 1, text: "existing" }]),
+      json: () =>
+        Promise.resolve([
+          { id: 1, text: "existing", createdAt: now, updatedAt: now },
+        ]),
     })
 
     const wrapper = mount(App)
     await flushPromises()
 
-    expect(fetchMock).toHaveBeenCalledWith("/api/widgets")
+    expect(fetchMock).toHaveBeenCalledWith(
+      "/api/widgets?orderBy=updatedAt&order=desc",
+    )
     expect(wrapper.findAll("textarea")).toHaveLength(1)
   })
 
@@ -31,7 +38,13 @@ describe("App", () => {
       })
       .mockResolvedValueOnce({
         ok: true,
-        json: () => Promise.resolve({ id: 1, text: "" }),
+        json: () =>
+          Promise.resolve({
+            id: 1,
+            text: "",
+            createdAt: now,
+            updatedAt: now,
+          }),
       })
 
     const wrapper = mount(App)

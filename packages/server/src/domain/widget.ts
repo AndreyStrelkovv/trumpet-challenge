@@ -2,14 +2,37 @@ import { ValidationError } from "./errors.js"
 
 const MAX_TEXT_LENGTH = 10000
 
+export const DOC_TYPES = [
+  "DOC_TYPE_1",
+  "DOC_TYPE_2",
+  "DOC_TYPE_3",
+  "DOC_TYPE_4",
+] as const
+
+export type DocType = (typeof DOC_TYPES)[number]
+
+export function isValidDocType(value: string): value is DocType {
+  return DOC_TYPES.includes(value as DocType)
+}
+
 export class Widget {
   private constructor(
     private readonly _id: number,
     private _text: string,
+    private _createdAt: Date,
+    private _updatedAt: Date,
+    private _docType?: DocType,
   ) {}
 
-  static create(id: number, text: string): Widget {
-    return new Widget(id, text)
+  static create(
+    id: number,
+    text: string,
+    createdAt?: Date,
+    updatedAt?: Date,
+    docType?: DocType,
+  ): Widget {
+    const now = new Date()
+    return new Widget(id, text, createdAt ?? now, updatedAt ?? now, docType)
   }
 
   get id(): number {
@@ -18,6 +41,18 @@ export class Widget {
 
   get text(): string {
     return this._text
+  }
+
+  get createdAt(): Date {
+    return this._createdAt
+  }
+
+  get updatedAt(): Date {
+    return this._updatedAt
+  }
+
+  get docType(): DocType | undefined {
+    return this._docType
   }
 
   updateText(text: string) {
@@ -30,5 +65,14 @@ export class Widget {
       )
     }
     this._text = text
+    this._updatedAt = new Date()
+  }
+
+  updateDocType(docType?: DocType) {
+    if (docType && !isValidDocType(docType)) {
+      throw new ValidationError(`Invalid doc type: ${docType}`)
+    }
+    this._docType = docType
+    this._updatedAt = new Date()
   }
 }

@@ -3,8 +3,11 @@ import { RawWidget, DbSchema } from "./types/widget.js"
 
 export interface Db {
   getWidgets(): RawWidget[]
-  createWidget(): RawWidget
-  updateWidget(id: number, text: string): RawWidget | null
+  createWidget(docType?: string): RawWidget
+  updateWidget(
+    id: number,
+    fields: { text?: string; docType?: string | null; updatedAt?: string },
+  ): RawWidget | null
   deleteWidget(id: number): boolean
 }
 
@@ -26,23 +29,33 @@ export function createDb(path: string): Db {
     getWidgets() {
       return data.widgets
     },
-    createWidget() {
-      const widget: RawWidget = { id: data.nextId++, text: "" }
+    createWidget(docType?: string) {
+      const now = new Date().toISOString()
+      const widget: RawWidget = {
+        id: data.nextId++,
+        text: "",
+        createdAt: now,
+        updatedAt: now,
+        ...(docType ? { docType } : {}),
+      }
       data.widgets.push(widget)
       persist()
       return widget
     },
-    updateWidget(id, text) {
-      const widget = data.widgets.find((w) => w.id === id)
+    updateWidget(id, fields) {
+      const widget = data.widgets.find((record) => record.id === id)
       if (!widget) return null
-      widget.text = text
+      if (fields.text) widget.text = fields.text
+      if (fields.docType === null) delete widget.docType
+      else if (fields.docType) widget.docType = fields.docType
+      if (fields.updatedAt) widget.updatedAt = fields.updatedAt
       persist()
       return widget
     },
     deleteWidget(id) {
-      const idx = data.widgets.findIndex((w) => w.id === id)
-      if (idx === -1) return false
-      data.widgets.splice(idx, 1)
+      const index = data.widgets.findIndex((record) => record.id === id)
+      if (index === -1) return false
+      data.widgets.splice(index, 1)
       persist()
       return true
     },
