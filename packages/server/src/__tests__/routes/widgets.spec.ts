@@ -1,14 +1,18 @@
 import { describe, it, expect, beforeEach } from "vitest"
 import request from "supertest"
-import { createApp } from "../app.js"
-import { createDb } from "../db.js"
+import { createApp } from "../../app.js"
+import { createDb } from "../../db.js"
+import { JsonWidgetRepository } from "../../repositories/jsonWidgetRepository.js"
+import { WidgetService } from "../../services/widgetService.js"
 
 describe("Widget API", () => {
   let app: ReturnType<typeof createApp>
 
   beforeEach(() => {
     const db = createDb(":memory:")
-    app = createApp(db)
+    const repo = new JsonWidgetRepository(db)
+    const service = new WidgetService(repo)
+    app = createApp(service)
   })
 
   it("GET /api/widgets returns empty array initially", async () => {
@@ -36,6 +40,13 @@ describe("Widget API", () => {
   it("PUT /api/widgets/:id returns 404 for unknown id", async () => {
     const res = await request(app).put("/api/widgets/999").send({ text: "nope" })
     expect(res.status).toBe(404)
+  })
+
+  it("PUT /api/widgets/:id returns 400 for empty text", async () => {
+    await request(app).post("/api/widgets")
+    const res = await request(app).put("/api/widgets/1").send({ text: "" })
+    expect(res.status).toBe(400)
+    expect(res.body.error).toBe("Widget text cannot be empty")
   })
 
   it("DELETE /api/widgets/:id removes widget", async () => {

@@ -1,10 +1,10 @@
 import { readFileSync, writeFileSync, existsSync } from "fs"
-import { Widget, DbSchema } from "./types/widget.js"
+import { RawWidget, DbSchema } from "./types/widget.js"
 
 export interface Db {
-  getWidgets(): Widget[]
-  createWidget(): Widget
-  updateWidget(id: number, text: string): Widget | null
+  getWidgets(): RawWidget[]
+  createWidget(): RawWidget
+  updateWidget(id: number, text: string): RawWidget | null
   deleteWidget(id: number): boolean
 }
 
@@ -27,7 +27,7 @@ export function createDb(path: string): Db {
       return data.widgets
     },
     createWidget() {
-      const widget: Widget = { id: data.nextId++, text: "" }
+      const widget: RawWidget = { id: data.nextId++, text: "" }
       data.widgets.push(widget)
       persist()
       return widget
