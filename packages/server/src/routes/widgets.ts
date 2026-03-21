@@ -46,11 +46,14 @@ export function widgetRoutes(service: WidgetService) {
 
   router.post("/", (req: Request, res: Response, next: NextFunction) => {
     try {
-      const { docType } = req.body ?? {}
+      const { text, docType } = req.body ?? {}
+      if (!text) {
+        throw new ValidationError("Widget text is required")
+      }
       if (docType && !isValidDocType(docType)) {
         throw new ValidationError(`Invalid docType: ${docType}`)
       }
-      const widget = service.create(docType)
+      const widget = service.create(text, docType)
       res.status(201).json(serialize(widget))
     } catch (err) {
       next(err)

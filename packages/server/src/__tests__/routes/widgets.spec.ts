@@ -21,11 +21,13 @@ describe("Widget API", () => {
     expect(res.body).toEqual([])
   })
 
-  it("POST /api/widgets creates a widget with timestamps", async () => {
-    const res = await request(app).post("/api/widgets")
+  it("POST /api/widgets creates a widget with text", async () => {
+    const res = await request(app)
+      .post("/api/widgets")
+      .send({ text: "hello" })
     expect(res.status).toBe(201)
     expect(res.body.id).toBe(1)
-    expect(res.body.text).toBe("")
+    expect(res.body.text).toBe("hello")
     expect(res.body.createdAt).toBeDefined()
     expect(res.body.updatedAt).toBeDefined()
 
@@ -33,23 +35,36 @@ describe("Widget API", () => {
     expect(list.body).toHaveLength(1)
   })
 
-  it("POST /api/widgets with docType", async () => {
+  it("POST /api/widgets with empty text returns 400", async () => {
     const res = await request(app)
       .post("/api/widgets")
-      .send({ docType: "DOC_TYPE_1" })
+      .send({ text: "" })
+    expect(res.status).toBe(400)
+  })
+
+  it("POST /api/widgets without text returns 400", async () => {
+    const res = await request(app).post("/api/widgets")
+    expect(res.status).toBe(400)
+  })
+
+  it("POST /api/widgets with text and docType", async () => {
+    const res = await request(app)
+      .post("/api/widgets")
+      .send({ text: "hello", docType: "DOC_TYPE_1" })
     expect(res.status).toBe(201)
+    expect(res.body.text).toBe("hello")
     expect(res.body.docType).toBe("DOC_TYPE_1")
   })
 
   it("POST /api/widgets with invalid docType returns 400", async () => {
     const res = await request(app)
       .post("/api/widgets")
-      .send({ docType: "INVALID" })
+      .send({ text: "hello", docType: "INVALID" })
     expect(res.status).toBe(400)
   })
 
   it("PUT /api/widgets/:id updates widget text", async () => {
-    await request(app).post("/api/widgets")
+    await request(app).post("/api/widgets").send({ text: "initial" })
     const res = await request(app).put("/api/widgets/1").send({ text: "hello" })
     expect(res.status).toBe(200)
     expect(res.body.id).toBe(1)
@@ -59,7 +74,7 @@ describe("Widget API", () => {
   })
 
   it("PUT /api/widgets/:id updates docType", async () => {
-    await request(app).post("/api/widgets")
+    await request(app).post("/api/widgets").send({ text: "initial" })
     const res = await request(app)
       .put("/api/widgets/1")
       .send({ text: "hi", docType: "DOC_TYPE_3" })
@@ -67,7 +82,7 @@ describe("Widget API", () => {
   })
 
   it("PUT /api/widgets/:id clears docType with null", async () => {
-    await request(app).post("/api/widgets").send({ docType: "DOC_TYPE_1" })
+    await request(app).post("/api/widgets").send({ text: "initial", docType: "DOC_TYPE_1" })
     const res = await request(app)
       .put("/api/widgets/1")
       .send({ text: "hi", docType: null })
@@ -80,14 +95,14 @@ describe("Widget API", () => {
   })
 
   it("PUT /api/widgets/:id returns 400 for empty text", async () => {
-    await request(app).post("/api/widgets")
+    await request(app).post("/api/widgets").send({ text: "initial" })
     const res = await request(app).put("/api/widgets/1").send({ text: "" })
     expect(res.status).toBe(400)
     expect(res.body.error).toBe("Widget text cannot be empty")
   })
 
   it("PUT /api/widgets/:id returns 400 for invalid docType", async () => {
-    await request(app).post("/api/widgets")
+    await request(app).post("/api/widgets").send({ text: "initial" })
     const res = await request(app)
       .put("/api/widgets/1")
       .send({ text: "hi", docType: "INVALID" })
@@ -95,7 +110,7 @@ describe("Widget API", () => {
   })
 
   it("DELETE /api/widgets/:id removes widget", async () => {
-    await request(app).post("/api/widgets")
+    await request(app).post("/api/widgets").send({ text: "initial" })
     const res = await request(app).delete("/api/widgets/1")
     expect(res.status).toBe(204)
 
@@ -109,16 +124,16 @@ describe("Widget API", () => {
   })
 
   it("auto-increments widget IDs", async () => {
-    const w1 = await request(app).post("/api/widgets")
-    const w2 = await request(app).post("/api/widgets")
+    const w1 = await request(app).post("/api/widgets").send({ text: "first" })
+    const w2 = await request(app).post("/api/widgets").send({ text: "second" })
     expect(w1.body.id).toBe(1)
     expect(w2.body.id).toBe(2)
   })
 
   it("GET /api/widgets filters by docType", async () => {
-    await request(app).post("/api/widgets").send({ docType: "DOC_TYPE_1" })
-    await request(app).post("/api/widgets").send({ docType: "DOC_TYPE_2" })
-    await request(app).post("/api/widgets")
+    await request(app).post("/api/widgets").send({ text: "one", docType: "DOC_TYPE_1" })
+    await request(app).post("/api/widgets").send({ text: "two", docType: "DOC_TYPE_2" })
+    await request(app).post("/api/widgets").send({ text: "three" })
 
     const res = await request(app).get("/api/widgets?docType=DOC_TYPE_1")
     expect(res.body).toHaveLength(1)
@@ -133,6 +148,14 @@ describe("Widget API", () => {
   it("GET /api/widgets returns 400 for invalid order", async () => {
     const res = await request(app).get("/api/widgets?order=invalid")
     expect(res.status).toBe(400)
+  })
+
+  it("PUT /api/widgets/:id accepts text over 1000 characters", async () => {
+    await request(app).post("/api/widgets").send({ text: "initial" })
+    const longText = "a".repeat(1500)
+    const res = await request(app).put("/api/widgets/1").send({ text: longText })
+    expect(res.status).toBe(200)
+    expect(res.body.text).toBe(longText)
   })
 
   it("GET /api/widgets returns 400 for invalid docType filter", async () => {

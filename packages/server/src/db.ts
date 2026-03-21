@@ -3,7 +3,7 @@ import { RawWidget, DbSchema } from "./types/widget.js"
 
 export interface Db {
   getWidgets(): RawWidget[]
-  createWidget(docType?: string): RawWidget
+  createWidget(text: string, docType?: string): RawWidget
   updateWidget(
     id: number,
     fields: { text?: string; docType?: string | null; updatedAt?: string },
@@ -29,11 +29,11 @@ export function createDb(path: string): Db {
     getWidgets() {
       return data.widgets
     },
-    createWidget(docType?: string) {
+    createWidget(text: string, docType?: string) {
       const now = new Date().toISOString()
       const widget: RawWidget = {
         id: data.nextId++,
-        text: "",
+        text,
         createdAt: now,
         updatedAt: now,
         ...(docType ? { docType } : {}),

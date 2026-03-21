@@ -29,8 +29,8 @@ export class WidgetService {
     return widgets
   }
 
-  create(docType?: DocType): Widget {
-    return this.repo.create(docType)
+  create(text: string, docType?: DocType): Widget {
+    return this.repo.create(text, docType)
   }
 
   update(id: number, text: string, docType?: DocType | null): Widget {

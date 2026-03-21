@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue"
 import TextWidget from "./components/TextWidget.vue"
+import EditWidgetModal from "./components/editWidgetModal.vue"
 import { DOC_TYPES, type Widget, type DocType } from "./types/widget"
 
 const widgets = ref<Widget[]>([])
-const orderBy = ref<"updatedAt" | "createdAt">("updatedAt")
+const orderBy = ref<"updatedAt" | "createdAt">("createdAt")
 const order = ref<"asc" | "desc">("desc")
 const filterDocType = ref<DocType | "">("")
+const showAddModal = ref(false)
 
 async function fetchWidgets() {
   const params = new URLSearchParams()
@@ -18,10 +20,19 @@ async function fetchWidgets() {
   widgets.value = await res.json()
 }
 
-async function addWidget() {
-  const res = await fetch("/api/widgets", { method: "POST" })
+function openAddModal() {
+  showAddModal.value = true
+}
+
+async function handleAddSave(payload: { text: string; docType?: DocType }) {
+  const res = await fetch("/api/widgets", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  })
   const widget = await res.json()
   widgets.value.unshift(widget)
+  showAddModal.value = false
 }
 
 function removeWidget(id: number) {
@@ -40,7 +51,7 @@ onMounted(fetchWidgets)
         <button
           data-testid="add-widget-btn"
           class="rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
-          @click="addWidget"
+          @click="openAddModal"
         >
           Add Widget
         </button>
@@ -89,6 +100,13 @@ onMounted(fetchWidgets)
           @saved="fetchWidgets"
         />
       </div>
+
+      <EditWidgetModal
+        v-if="showAddModal"
+        text=""
+        @save="handleAddSave"
+        @cancel="showAddModal = false"
+      />
     </div>
   </div>
 </template>

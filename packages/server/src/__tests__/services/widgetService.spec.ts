@@ -95,20 +95,20 @@ describe("WidgetService", () => {
     expect(result[0].id).toBe(1)
   })
 
-  it("create delegates to repo.create", () => {
-    const widget = Widget.create(1, "")
+  it("create delegates to repo.create with text", () => {
+    const widget = Widget.create(1, "hello")
     vi.mocked(repo.create).mockReturnValue(widget)
 
-    expect(service.create()).toBe(widget)
-    expect(repo.create).toHaveBeenCalledOnce()
+    expect(service.create("hello")).toBe(widget)
+    expect(repo.create).toHaveBeenCalledWith("hello", undefined)
   })
 
-  it("create passes docType to repo", () => {
-    const widget = Widget.create(1, "", undefined, undefined, "DOC_TYPE_1")
+  it("create passes text and docType to repo", () => {
+    const widget = Widget.create(1, "hello", undefined, undefined, "DOC_TYPE_1")
     vi.mocked(repo.create).mockReturnValue(widget)
 
-    service.create("DOC_TYPE_1")
-    expect(repo.create).toHaveBeenCalledWith("DOC_TYPE_1")
+    service.create("hello", "DOC_TYPE_1")
+    expect(repo.create).toHaveBeenCalledWith("hello", "DOC_TYPE_1")
   })
 
   it("update finds widget, updates text, saves", () => {
