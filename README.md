@@ -25,6 +25,14 @@ npm run dev
 - Client: http://localhost:8080
 - Server: http://localhost:3000
 
+## Play around
+
+1. Add new widget, try submitting with empty string to see validation
+2. lick edit and edit existing widget in the modal
+3. Sort by updated to seed the sorting
+4. Filter by document type
+5. Delete a widget
+
 ## Testing
 
 ```bash
