@@ -10,6 +10,7 @@ import FilterIcon from "./components/illustrations/FilterIcon.vue"
 import EmptyBoxIcon from "./components/illustrations/EmptyBoxIcon.vue"
 import TrumpetSuperButton from "./components/TrumpetSuperButton.vue"
 import { DOC_TYPES, type Widget, type DocType } from "./types/widget"
+import { getWidgets, createWidget } from "./api/widgetApi"
 
 const orderByOptions: SelectOption[] = [
   { value: "updatedAt", label: "Sort by Updated" },
@@ -33,13 +34,11 @@ const filterDocType = ref<DocType | "">("")
 const showAddModal = ref(false)
 
 async function fetchWidgets() {
-  const params = new URLSearchParams()
-  params.set("orderBy", orderBy.value)
-  params.set("order", order.value)
-  if (filterDocType.value) params.set("docType", filterDocType.value)
-
-  const res = await fetch(`/api/widgets?${params}`)
-  widgets.value = await res.json()
+  widgets.value = await getWidgets({
+    orderBy: orderBy.value,
+    order: order.value,
+    docType: filterDocType.value || undefined,
+  })
 }
 
 function openAddModal() {
@@ -47,12 +46,7 @@ function openAddModal() {
 }
 
 async function handleAddSave(payload: { text: string; docType?: DocType }) {
-  const res = await fetch("/api/widgets", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload),
-  })
-  const widget = await res.json()
+  const widget = await createWidget(payload)
   widgets.value.unshift(widget)
   showAddModal.value = false
 }

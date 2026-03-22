@@ -2,9 +2,12 @@ import { describe, it, expect, vi, beforeEach } from "vitest"
 import { mount, flushPromises } from "@vue/test-utils"
 import TextWidget from "../components/TextWidget.vue"
 import EditWidgetModal from "../components/EditWidgetModal.vue"
+import * as widgetApi from "../api/widgetApi"
 
-const fetchMock = vi.fn()
-vi.stubGlobal("fetch", fetchMock)
+vi.mock("../api/widgetApi")
+
+const mockedUpdateWidget = vi.mocked(widgetApi.updateWidget)
+const mockedDeleteWidget = vi.mocked(widgetApi.deleteWidget)
 
 const defaultProps = {
   id: 1,
@@ -15,7 +18,7 @@ const defaultProps = {
 
 describe("TextWidget", () => {
   beforeEach(() => {
-    fetchMock.mockReset()
+    vi.resetAllMocks()
   })
 
   it("shows widget text as read-only", () => {
@@ -48,7 +51,13 @@ describe("TextWidget", () => {
   })
 
   it("modal save triggers PUT and emits saved", async () => {
-    fetchMock.mockResolvedValueOnce({ ok: true, json: () => Promise.resolve({}) })
+    mockedUpdateWidget.mockResolvedValueOnce({
+      id: 1,
+      text: "updated",
+      createdAt: defaultProps.createdAt,
+      updatedAt: defaultProps.updatedAt,
+      docType: "DOC_TYPE_1",
+    })
 
     const wrapper = mount(TextWidget, { props: defaultProps })
     await wrapper.find("[data-testid='edit-btn']").trigger("click")
@@ -57,10 +66,9 @@ describe("TextWidget", () => {
     modal.vm.$emit("save", { text: "updated", docType: "DOC_TYPE_1" })
     await flushPromises()
 
-    expect(fetchMock).toHaveBeenCalledWith("/api/widgets/1", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ text: "updated", docType: "DOC_TYPE_1" }),
+    expect(mockedUpdateWidget).toHaveBeenCalledWith(1, {
+      text: "updated",
+      docType: "DOC_TYPE_1",
     })
     expect(wrapper.emitted("saved")).toBeTruthy()
     expect(wrapper.findComponent(EditWidgetModal).exists()).toBe(false)
@@ -79,7 +87,7 @@ describe("TextWidget", () => {
   })
 
   it("delete button emits delete event", async () => {
-    fetchMock.mockResolvedValueOnce({ ok: true })
+    mockedDeleteWidget.mockResolvedValueOnce(undefined)
 
     const wrapper = mount(TextWidget, { props: defaultProps })
     await wrapper.find("[data-testid='delete-btn']").trigger("click")
