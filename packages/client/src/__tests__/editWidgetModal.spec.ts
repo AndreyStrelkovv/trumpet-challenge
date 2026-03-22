@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest"
 import { mount } from "@vue/test-utils"
-import EditWidgetModal from "../components/editWidgetModal.vue"
+import EditWidgetModal from "../components/EditWidgetModal.vue"
 
 const defaultProps = {
   text: "hello world",

@@ -1,7 +1,8 @@
 # Coding Preferences
 
 ## Naming
-- camelCase for file names (e.g. `widgetService.ts`, not `widget-service.ts`)
+- PascalCase for Vue component files (e.g. `EditWidgetModal.vue`)
+- camelCase for all other files (e.g. `widgetService.ts`, not `widget-service.ts`)
 
 ## TypeScript
 - No `void` — never use as a return type

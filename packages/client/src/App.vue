@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue"
 import TextWidget from "./components/TextWidget.vue"
-import EditWidgetModal from "./components/editWidgetModal.vue"
+import EditWidgetModal from "./components/EditWidgetModal.vue"
 import { DOC_TYPES, type Widget, type DocType } from "./types/widget"
 
 const widgets = ref<Widget[]>([])

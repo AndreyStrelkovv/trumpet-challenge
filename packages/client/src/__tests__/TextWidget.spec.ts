@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from "vitest"
 import { mount, flushPromises } from "@vue/test-utils"
 import TextWidget from "../components/TextWidget.vue"
-import EditWidgetModal from "../components/editWidgetModal.vue"
+import EditWidgetModal from "../components/EditWidgetModal.vue"
 
 const fetchMock = vi.fn()
 vi.stubGlobal("fetch", fetchMock)

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue"
 import { type DocType } from "../types/widget"
-import EditWidgetModal from "./editWidgetModal.vue"
+import EditWidgetModal from "./EditWidgetModal.vue"
 
 const props = defineProps<{
   id: number
