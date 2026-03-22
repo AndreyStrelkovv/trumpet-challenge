@@ -19,5 +19,5 @@ RUN npm ci -w server --omit=dev
 COPY packages/server/ packages/server/
 COPY --from=build /app/packages/client/dist packages/client/dist
 
-EXPOSE 3001
+EXPOSE 3000
 CMD ["node", "--import", "tsx", "packages/server/src/index.ts"]

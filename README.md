@@ -17,8 +17,8 @@ npm install
 npm run dev
 ```
 
-- Client: http://localhost:3000
-- Server: http://localhost:3001
+- Client: http://localhost:8080
+- Server: http://localhost:3000
 
 ## Testing
 
@@ -32,7 +32,7 @@ npm test
 docker-compose up --build
 ```
 
-App available at http://localhost:3000
+App available at http://localhost:3000 (Docker) / http://localhost:8080 (dev)
 
 ## API
 
