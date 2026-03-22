@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue"
 import { type DocType } from "../types/widget"
+import { relativeTime } from "../relativeTime"
 import EditWidgetModal from "./EditWidgetModal.vue"
 import DocTypeBadge from "./DocTypeBadge.vue"
 
@@ -38,7 +39,7 @@ async function remove() {
 }
 
 function formatDate(iso: string) {
-  return new Date(iso).toLocaleString()
+  return relativeTime(iso)
 }
 </script>
 
@@ -78,12 +79,14 @@ function formatDate(iso: string) {
       </div>
     </div>
 
-    <EditWidgetModal
-      v-if="editing"
-      :text="initialText"
-      :doc-type="initialDocType"
-      @save="handleSave"
-      @cancel="editing = false"
-    />
+    <Transition name="modal">
+      <EditWidgetModal
+        v-if="editing"
+        :text="initialText"
+        :doc-type="initialDocType"
+        @save="handleSave"
+        @cancel="editing = false"
+      />
+    </Transition>
   </div>
 </template>

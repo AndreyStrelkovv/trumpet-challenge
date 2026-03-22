@@ -1,3 +1,44 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Modal backdrop + panel */
+.modal-enter-active,
+.modal-leave-active {
+  transition: opacity 0.2s ease;
+}
+.modal-enter-active > div,
+.modal-leave-active > div {
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+.modal-enter-from,
+.modal-leave-to {
+  opacity: 0;
+}
+.modal-enter-from > div {
+  transform: scale(0.95);
+  opacity: 0;
+}
+.modal-leave-to > div {
+  transform: scale(0.95);
+  opacity: 0;
+}
+
+/* Widget list items */
+.widget-enter-active {
+  transition: all 0.3s ease;
+}
+.widget-leave-active {
+  transition: all 0.2s ease;
+}
+.widget-enter-from {
+  opacity: 0;
+  transform: translateY(-12px);
+}
+.widget-leave-to {
+  opacity: 0;
+  transform: translateX(-12px);
+}
+.widget-move {
+  transition: transform 0.3s ease;
+}

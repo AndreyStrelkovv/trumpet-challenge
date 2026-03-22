@@ -109,7 +109,12 @@ onMounted(fetchWidgets)
         Add Widget
       </TrumpetSuperButton>
 
-      <div v-if="widgets.length" class="flex flex-col gap-4">
+      <TransitionGroup
+        v-if="widgets.length"
+        name="widget"
+        tag="div"
+        class="flex flex-col gap-4"
+      >
         <TextWidget
           v-for="widget in widgets"
           :key="widget.id"
@@ -121,7 +126,7 @@ onMounted(fetchWidgets)
           @delete="removeWidget"
           @saved="fetchWidgets"
         />
-      </div>
+      </TransitionGroup>
 
       <div
         v-else
@@ -134,12 +139,14 @@ onMounted(fetchWidgets)
         </p>
       </div>
 
-      <EditWidgetModal
-        v-if="showAddModal"
-        text=""
-        @save="handleAddSave"
-        @cancel="showAddModal = false"
-      />
+      <Transition name="modal">
+        <EditWidgetModal
+          v-if="showAddModal"
+          text=""
+          @save="handleAddSave"
+          @cancel="showAddModal = false"
+        />
+      </Transition>
     </div>
   </div>
 </template>

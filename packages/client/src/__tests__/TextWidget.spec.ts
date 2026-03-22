@@ -89,9 +89,11 @@ describe("TextWidget", () => {
     expect(wrapper.emitted("delete")![0]).toEqual([1])
   })
 
-  it("displays created and updated dates", () => {
+  it("displays relative timestamps for created and updated dates", () => {
     const wrapper = mount(TextWidget, { props: defaultProps })
-    expect(wrapper.text()).toContain("Created:")
-    expect(wrapper.text()).toContain("Updated:")
+    const meta = wrapper.find("[data-testid='widget-meta']").text()
+    expect(meta).toContain("Created:")
+    expect(meta).toContain("Updated:")
+    expect(meta).toMatch(/\d+\w+ ago/)
   })
 })
