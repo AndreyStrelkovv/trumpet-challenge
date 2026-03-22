@@ -2,6 +2,7 @@
 import { ref } from "vue"
 import { type DocType } from "../types/widget"
 import EditWidgetModal from "./EditWidgetModal.vue"
+import DocTypeBadge from "./DocTypeBadge.vue"
 
 const props = defineProps<{
   id: number
@@ -51,30 +52,24 @@ function formatDate(iso: string) {
           <span>Created: {{ formatDate(createdAt) }}</span>
           <span class="text-slate-300">·</span>
           <span>Updated: {{ formatDate(updatedAt) }}</span>
-          <span
-            v-if="initialDocType"
-            data-testid="doctype-badge"
-            class="rounded-md bg-indigo-50 px-2 py-0.5 text-xs font-medium text-indigo-600"
-          >
-            {{ initialDocType }}
-          </span>
+          <DocTypeBadge v-if="initialDocType" :doc-type="initialDocType" />
         </div>
 
         <p data-testid="widget-text" class="mb-3 whitespace-pre-wrap text-sm font-medium leading-relaxed text-slate-800">
           {{ initialText }}
         </p>
 
-        <div class="flex items-center gap-2">
+        <div class="flex items-center gap-3 opacity-0 transition-opacity group-hover:opacity-100">
           <button
             data-testid="edit-btn"
-            class="rounded-lg bg-indigo-600 px-3 py-1.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-indigo-700"
+            class="rounded-lg border border-slate-300 px-3 py-1.5 text-sm font-medium text-slate-600 transition-colors hover:border-indigo-300 hover:text-indigo-600 hover:bg-indigo-50"
             @click="editing = true"
           >
             Edit
           </button>
           <button
             data-testid="delete-btn"
-            class="rounded-lg bg-rose-600 px-3 py-1.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-rose-700"
+            class="text-sm font-medium text-rose-500 transition-colors hover:text-rose-700"
             @click="remove"
           >
             Delete

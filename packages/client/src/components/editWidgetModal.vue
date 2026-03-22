@@ -41,6 +41,7 @@ function handleSave() {
       <TrumpetSelector
         v-model="editDocType"
         :options="docTypeOptions"
+        placeholder="Select document type"
         data-testid="modal-doctype-select"
         class="mb-4 w-full"
       />
