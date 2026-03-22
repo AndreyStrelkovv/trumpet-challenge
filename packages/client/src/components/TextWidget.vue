@@ -22,7 +22,7 @@ const emit = defineEmits<{
 
 const editing = ref(false)
 
-async function handleSave(payload: { text: string; docType?: DocType }) {
+const handleSave = async (payload: { text: string; docType?: DocType }) => {
   await updateWidget(props.id, {
     text: payload.text,
     docType: payload.docType,
@@ -31,7 +31,7 @@ async function handleSave(payload: { text: string; docType?: DocType }) {
   emit("saved")
 }
 
-async function remove() {
+const remove = async () => {
   await deleteWidget(props.id)
   emit("delete", props.id)
 }

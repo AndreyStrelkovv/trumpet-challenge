@@ -24,7 +24,7 @@ const editText = ref(props.text)
 const editDocType = ref<DocType | undefined>(props.docType)
 const textError = ref("")
 
-function handleSave() {
+const handleSave = () => {
   if (!editText.value.trim()) {
     textError.value = "Text is required"
     return

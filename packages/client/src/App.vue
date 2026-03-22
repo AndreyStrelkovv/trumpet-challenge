@@ -34,7 +34,7 @@ const order = ref<SortOrder>(SORT_ORDERS.DESC)
 const filterDocType = ref<DocType | "">("")
 const showAddModal = ref(false)
 
-async function fetchWidgets() {
+const fetchWidgets = async () => {
   widgets.value = await getWidgets({
     orderBy: orderBy.value,
     order: order.value,
@@ -42,17 +42,17 @@ async function fetchWidgets() {
   })
 }
 
-function openAddModal() {
+const openAddModal = () => {
   showAddModal.value = true
 }
 
-async function handleAddSave(payload: { text: string; docType?: DocType }) {
+const handleAddSave = async (payload: { text: string; docType?: DocType }) => {
   await createWidget(payload)
   await fetchWidgets()
   showAddModal.value = false
 }
 
-function removeWidget(id: number) {
+const removeWidget = (id: number) => {
   widgets.value = widgets.value.filter((widget) => widget.id !== id)
 }
 

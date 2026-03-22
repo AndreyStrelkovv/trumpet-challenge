@@ -4,7 +4,7 @@ import { WidgetService } from "@/services/widgetService.js"
 import { widgetRoutes } from "@/controllers/widgets.js"
 import { errorHandler } from "@/middleware/errorHandler.js"
 
-export function createApp(service: WidgetService) {
+export const createApp = (service: WidgetService) => {
   const app = express()
   app.use(cors())
   app.use(express.json())

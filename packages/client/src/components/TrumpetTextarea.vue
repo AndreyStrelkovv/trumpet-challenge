@@ -16,7 +16,7 @@ defineEmits<{
 
 const textareaRef = ref<HTMLTextAreaElement>()
 
-function autoResize() {
+const autoResize = () => {
   const element = textareaRef.value
   if (!element) return
   element.style.height = "auto"

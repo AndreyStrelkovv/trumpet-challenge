@@ -5,7 +5,7 @@ const WEEK = 604800
 const MONTH = 2592000
 const YEAR = 31536000
 
-export function relativeTime(iso: string): string {
+export const relativeTime = (iso: string): string => {
   const seconds = Math.floor((Date.now() - new Date(iso).getTime()) / 1000)
 
   if (seconds < 0) return "just now"

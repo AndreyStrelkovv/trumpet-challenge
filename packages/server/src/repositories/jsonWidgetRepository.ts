@@ -5,15 +5,14 @@ import type { DocType } from "common/widget"
 import { NotFoundError } from "common/errors"
 import type { WidgetRepository } from "@/repositories/widgetRepository.js"
 
-function widgetParser(dbWidget: RawWidget): Widget {
-  return Widget.create(
+const widgetParser = (dbWidget: RawWidget): Widget =>
+  Widget.create(
     dbWidget.id,
     dbWidget.text,
     dbWidget.createdAt ? new Date(dbWidget.createdAt) : new Date(0),
     dbWidget.updatedAt ? new Date(dbWidget.updatedAt) : new Date(0),
     dbWidget.docType as DocType | undefined,
-  );
-}
+  )
 
 export class JsonWidgetRepository implements WidgetRepository {
   constructor(private db: Db) {}

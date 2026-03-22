@@ -9,9 +9,8 @@ export const DOC_TYPES = [
 
 export type DocType = (typeof DOC_TYPES)[number]
 
-export function isValidDocType(value: string): value is DocType {
-  return DOC_TYPES.includes(value as DocType)
-}
+export const isValidDocType = (value: string): value is DocType =>
+  DOC_TYPES.includes(value as DocType)
 
 export interface WidgetDTO {
   id: number

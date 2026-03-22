@@ -11,7 +11,7 @@ export interface Db {
   deleteWidget(id: number): boolean
 }
 
-export function createDb(path: string): Db {
+export const createDb = (path: string): Db => {
   const isMemory = path === ":memory:"
   let data: DbSchema = { nextId: 1, widgets: [] }
 
@@ -19,7 +19,7 @@ export function createDb(path: string): Db {
     data = JSON.parse(readFileSync(path, "utf-8"))
   }
 
-  function persist() {
+  const persist = () => {
     if (!isMemory) {
       writeFileSync(path, JSON.stringify(data, null, 2))
     }

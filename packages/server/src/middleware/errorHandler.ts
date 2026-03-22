@@ -1,12 +1,12 @@
 import { Request, Response, NextFunction } from "express"
 import { NotFoundError, ValidationError } from "common/errors"
 
-export function errorHandler(
+export const errorHandler = (
   err: Error,
   _req: Request,
   res: Response,
   _next: NextFunction,
-) {
+) => {
   if (err instanceof NotFoundError) {
     res.status(404).json({ error: "Not found" })
     return

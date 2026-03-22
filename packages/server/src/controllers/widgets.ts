@@ -5,34 +5,31 @@ import type { DocType } from "common/widget"
 import { ValidationError } from "common/errors"
 import { isValidSortField, isValidSortOrder } from "common/sorting"
 
-function serialize(widget: Widget) {
-  return {
-    id: widget.id,
-    text: widget.text,
-    createdAt: widget.createdAt.toISOString(),
-    updatedAt: widget.updatedAt.toISOString(),
-    ...(widget.docType ? { docType: widget.docType } : {}),
-  }
-}
+const serialize = (widget: Widget) => ({
+  id: widget.id,
+  text: widget.text,
+  createdAt: widget.createdAt.toISOString(),
+  updatedAt: widget.updatedAt.toISOString(),
+  ...(widget.docType ? { docType: widget.docType } : {}),
+})
 
-function handler(fn: (req: Request, res: Response) => void) {
-  return (req: Request, res: Response, next: NextFunction) => {
+const handler = (fn: (req: Request, res: Response) => void) =>
+  (req: Request, res: Response, next: NextFunction) => {
     try {
       fn(req, res)
     } catch (err) {
       next(err)
     }
   }
-}
 
-function validatedDocType(docType: string): DocType {
+const validatedDocType = (docType: string): DocType => {
   if (!isValidDocType(docType)) {
     throw new ValidationError(`Invalid docType: ${docType}`)
   }
   return docType
 }
 
-export function widgetRoutes(service: WidgetService) {
+export const widgetRoutes = (service: WidgetService) => {
   const router = Router()
 
   router.get("/", handler((req, res) => {

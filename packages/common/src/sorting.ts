@@ -12,10 +12,8 @@ export const SORT_ORDERS = {
 
 export type SortOrder = (typeof SORT_ORDERS)[keyof typeof SORT_ORDERS]
 
-export function isValidSortField(value: string): value is SortField {
-  return Object.values(SORT_FIELDS).includes(value as SortField)
-}
+export const isValidSortField = (value: string): value is SortField =>
+  Object.values(SORT_FIELDS).includes(value as SortField)
 
-export function isValidSortOrder(value: string): value is SortOrder {
-  return Object.values(SORT_ORDERS).includes(value as SortOrder)
-}
+export const isValidSortOrder = (value: string): value is SortOrder =>
+  Object.values(SORT_ORDERS).includes(value as SortOrder)

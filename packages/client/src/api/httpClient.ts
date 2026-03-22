@@ -1,6 +1,6 @@
 const BASE = "/api"
 
-async function request(path: string, options?: RequestInit) {
+const request = async (path: string, options?: RequestInit) => {
   const response = await fetch(`${BASE}${path}`, options)
   if (!response.ok) {
     throw new Error(
@@ -11,36 +11,33 @@ async function request(path: string, options?: RequestInit) {
   return response.json()
 }
 
-export function get<T>(
+export const get = <T>(
   path: string,
   params?: Record<string, string>,
-): Promise<T> {
+): Promise<T> => {
   const query = params ? `?${new URLSearchParams(params)}` : ""
   return request(`${path}${query}`)
 }
 
-export function post<T>(
+export const post = <T>(
   path: string,
   body: Record<string, unknown>,
-): Promise<T> {
-  return request(path, {
+): Promise<T> =>
+  request(path, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),
   })
-}
 
-export function put<T>(
+export const put = <T>(
   path: string,
   body: Record<string, unknown>,
-): Promise<T> {
-  return request(path, {
+): Promise<T> =>
+  request(path, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),
   })
-}
 
-export function del(path: string): Promise<void> {
-  return request(path, { method: "DELETE" })
-}
+export const del = (path: string): Promise<void> =>
+  request(path, { method: "DELETE" })
