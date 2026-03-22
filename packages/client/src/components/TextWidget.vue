@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref } from "vue"
 import { type DocType } from "common/widget"
-import { relativeTime } from "@/relativeTime"
 import { updateWidget, deleteWidget } from "@/api/widgetApi"
+import { relativeTime } from "@/relativeTime"
 import EditWidgetModal from "@/components/EditWidgetModal.vue"
 import DocTypeBadge from "@/components/DocTypeBadge.vue"
 import TrumpetButton from "@/components/TrumpetButton.vue"
@@ -35,10 +35,6 @@ async function remove() {
   await deleteWidget(props.id)
   emit("delete", props.id)
 }
-
-function formatDate(iso: string) {
-  return relativeTime(iso)
-}
 </script>
 
 <template>
@@ -53,9 +49,9 @@ function formatDate(iso: string) {
           data-testid="widget-meta"
           class="mb-2 flex items-center gap-2 text-xs text-slate-400"
         >
-          <span>Created: {{ formatDate(createdAt) }}</span>
+          <span>Created: {{ relativeTime(createdAt) }}</span>
           <span class="text-slate-300">·</span>
-          <span>Updated: {{ formatDate(updatedAt) }}</span>
+          <span>Updated: {{ relativeTime(updatedAt) }}</span>
           <DocTypeBadge v-if="initialDocType" :doc-type="initialDocType" />
         </div>
 

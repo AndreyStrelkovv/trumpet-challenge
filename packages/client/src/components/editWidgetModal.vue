@@ -7,7 +7,7 @@ import TrumpetButton from "@/components/TrumpetButton.vue"
 
 const docTypeOptions: SelectOption[] = [
   { value: undefined, label: "No doc type" },
-  ...DOC_TYPES.map((dt) => ({ value: dt, label: dt })),
+  ...DOC_TYPES.map((docType) => ({ value: docType, label: docType })),
 ]
 
 const props = defineProps<{

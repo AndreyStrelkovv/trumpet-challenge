@@ -1,16 +1,11 @@
 import { Db } from "@/db.js"
+import type { RawWidget } from "@/types/widget.js"
 import { Widget } from "common/widget"
 import type { DocType } from "common/widget"
 import { NotFoundError } from "common/errors"
 import type { WidgetRepository } from "@/repositories/widgetRepository.js"
 
-function widgetParser(dbWidget: {
-  id: number;
-  text: string;
-  createdAt?: string;
-  updatedAt?: string;
-  docType?: string;
-}): Widget {
+function widgetParser(dbWidget: RawWidget): Widget {
   return Widget.create(
     dbWidget.id,
     dbWidget.text,

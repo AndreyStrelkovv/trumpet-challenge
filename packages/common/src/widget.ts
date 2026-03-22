@@ -78,6 +78,9 @@ export class Widget {
   }
 
   updateDocType(docType?: DocType): Widget {
+    if (docType && !isValidDocType(docType)) {
+      throw new ValidationError(`Invalid doc type: ${docType}`)
+    }
     this._docType = docType
     this._updatedAt = new Date()
     return this

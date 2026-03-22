@@ -16,11 +16,11 @@ describe("JsonWidgetRepository", () => {
   })
 
   it("create returns a Widget entity with auto-incremented id", () => {
-    const w1 = repo.create("text")
-    const w2 = repo.create("text")
-    expect(w1.id).toBe(1)
-    expect(w1.text).toBe("text")
-    expect(w2.id).toBe(2)
+    const widget1 = repo.create("text")
+    const widget2 = repo.create("text")
+    expect(widget1.id).toBe(1)
+    expect(widget1.text).toBe("text")
+    expect(widget2.id).toBe(2)
   })
 
   it("findById returns Widget or undefined", () => {
@@ -31,17 +31,17 @@ describe("JsonWidgetRepository", () => {
   })
 
   it("save persists text changes", () => {
-    const w = repo.create("text")
-    w.updateText("updated")
-    repo.save(w)
+    const widget =repo.create("text")
+    widget.updateText("updated")
+    repo.save(widget)
 
-    const found = repo.findById(w.id)
+    const found = repo.findById(widget.id)
     expect(found?.text).toBe("updated")
   })
 
   it("remove deletes a widget", () => {
-    const w = repo.create("text")
-    repo.remove(w.id)
+    const widget =repo.create("text")
+    repo.remove(widget.id)
     expect(repo.findAll()).toHaveLength(0)
   })
 
@@ -50,36 +50,36 @@ describe("JsonWidgetRepository", () => {
   })
 
   it("create sets createdAt and updatedAt", () => {
-    const w = repo.create("text")
-    expect(w.createdAt).toBeInstanceOf(Date)
-    expect(w.updatedAt).toBeInstanceOf(Date)
+    const widget =repo.create("text")
+    expect(widget.createdAt).toBeInstanceOf(Date)
+    expect(widget.updatedAt).toBeInstanceOf(Date)
   })
 
   it("create with docType persists it", () => {
-    const w = repo.create("text", "DOC_TYPE_1")
-    expect(w.docType).toBe("DOC_TYPE_1")
-    const found = repo.findById(w.id)
+    const widget =repo.create("text", "DOC_TYPE_1")
+    expect(widget.docType).toBe("DOC_TYPE_1")
+    const found = repo.findById(widget.id)
     expect(found?.docType).toBe("DOC_TYPE_1")
   })
 
   it("create without docType leaves it undefined", () => {
-    const w = repo.create("text")
-    expect(w.docType).toBeUndefined()
+    const widget =repo.create("text")
+    expect(widget.docType).toBeUndefined()
   })
 
   it("save persists docType changes", () => {
-    const w = repo.create("text")
-    w.updateDocType("DOC_TYPE_2")
-    repo.save(w)
-    const found = repo.findById(w.id)
+    const widget =repo.create("text")
+    widget.updateDocType("DOC_TYPE_2")
+    repo.save(widget)
+    const found = repo.findById(widget.id)
     expect(found?.docType).toBe("DOC_TYPE_2")
   })
 
   it("save persists docType clearing", () => {
-    const w = repo.create("text", "DOC_TYPE_1")
-    w.updateDocType(undefined)
-    repo.save(w)
-    const found = repo.findById(w.id)
+    const widget =repo.create("text", "DOC_TYPE_1")
+    widget.updateDocType(undefined)
+    repo.save(widget)
+    const found = repo.findById(widget.id)
     expect(found?.docType).toBeUndefined()
   })
 })

@@ -25,7 +25,7 @@ const orderOptions: SelectOption[] = [
 
 const docTypeFilterOptions: SelectOption[] = [
   { value: "", label: "All doc types" },
-  ...DOC_TYPES.map((dt) => ({ value: dt, label: dt })),
+  ...DOC_TYPES.map((docType) => ({ value: docType, label: docType })),
 ]
 
 const widgets = ref<Widget[]>([])

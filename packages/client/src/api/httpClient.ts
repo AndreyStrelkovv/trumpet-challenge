@@ -7,7 +7,7 @@ async function request(path: string, options?: RequestInit) {
       `${options?.method ?? "GET"} ${path} failed: ${response.status}`,
     )
   }
-  if (response.status === 204) return undefined
+  if (response.status === 204) return
   return response.json()
 }
 

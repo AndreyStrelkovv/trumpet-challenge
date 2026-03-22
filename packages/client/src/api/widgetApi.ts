@@ -26,10 +26,10 @@ export function createWidget(payload: {
 export function updateWidget(
   id: number,
   payload: { text: string; docType?: DocType },
-) {
+): Promise<Widget> {
   return put(`/widgets/${id}`, payload)
 }
 
-export function deleteWidget(id: number) {
+export function deleteWidget(id: number): Promise<void> {
   return del(`/widgets/${id}`)
 }

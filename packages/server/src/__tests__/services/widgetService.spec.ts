@@ -74,22 +74,22 @@ describe("WidgetService", () => {
   })
 
   it("getAll filters by docType", () => {
-    const w1 = Widget.create(
+    const widget1 = Widget.create(
       1,
       "a",
       undefined,
       undefined,
       "DOC_TYPE_1",
     )
-    const w2 = Widget.create(
+    const widget2 = Widget.create(
       2,
       "b",
       undefined,
       undefined,
       "DOC_TYPE_2",
     )
-    const w3 = Widget.create(3, "c")
-    vi.mocked(repo.findAll).mockReturnValue([w1, w2, w3])
+    const widget3 = Widget.create(3, "c")
+    vi.mocked(repo.findAll).mockReturnValue([widget1, widget2, widget3])
 
     const result = service.getAll({ docType: "DOC_TYPE_1" })
     expect(result).toHaveLength(1)

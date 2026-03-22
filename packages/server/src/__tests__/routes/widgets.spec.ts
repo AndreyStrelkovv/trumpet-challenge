@@ -124,10 +124,10 @@ describe("Widget API", () => {
   })
 
   it("auto-increments widget IDs", async () => {
-    const w1 = await request(app).post("/api/widgets").send({ text: "first" })
-    const w2 = await request(app).post("/api/widgets").send({ text: "second" })
-    expect(w1.body.id).toBe(1)
-    expect(w2.body.id).toBe(2)
+    const first = await request(app).post("/api/widgets").send({ text: "first" })
+    const second = await request(app).post("/api/widgets").send({ text: "second" })
+    expect(first.body.id).toBe(1)
+    expect(second.body.id).toBe(2)
   })
 
   it("GET /api/widgets filters by docType", async () => {
