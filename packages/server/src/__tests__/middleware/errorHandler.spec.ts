@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from "vitest"
 import { errorHandler } from "../../middleware/errorHandler.js"
-import { NotFoundError, ValidationError } from "../../domain/errors.js"
+import { NotFoundError, ValidationError } from "common/errors"
 import { Request, Response, NextFunction } from "express"
 
 function createMockRes() {

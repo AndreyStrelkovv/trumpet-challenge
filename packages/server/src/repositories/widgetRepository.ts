@@ -1,4 +1,4 @@
-import { Widget, DocType } from "./widget.js"
+import type { Widget, DocType } from "common/widget"
 
 export interface WidgetRepository {
   findAll(): Widget[]

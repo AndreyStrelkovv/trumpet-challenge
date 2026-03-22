@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, afterEach } from "vitest"
-import { Widget } from "../../domain/widget.js"
-import { ValidationError } from "../../domain/errors.js"
+import { Widget } from "common/widget"
+import { ValidationError } from "common/errors"
 
 describe("Widget", () => {
   afterEach(() => {

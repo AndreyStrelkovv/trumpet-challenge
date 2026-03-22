@@ -10,16 +10,17 @@ import FilterIcon from "./components/illustrations/FilterIcon.vue"
 import EmptyBoxIcon from "./components/illustrations/EmptyBoxIcon.vue"
 import TrumpetSuperButton from "./components/TrumpetSuperButton.vue"
 import { DOC_TYPES, type Widget, type DocType } from "./types/widget"
+import { SORT_FIELDS, SORT_ORDERS, type SortField, type SortOrder } from "./types/sorting"
 import { getWidgets, createWidget } from "./api/widgetApi"
 
 const orderByOptions: SelectOption[] = [
-  { value: "updatedAt", label: "Sort by Updated" },
-  { value: "createdAt", label: "Sort by Created" },
+  { value: SORT_FIELDS.UPDATED_AT, label: "Sort by Updated" },
+  { value: SORT_FIELDS.CREATED_AT, label: "Sort by Created" },
 ]
 
 const orderOptions: SelectOption[] = [
-  { value: "desc", label: "Newest first" },
-  { value: "asc", label: "Oldest first" },
+  { value: SORT_ORDERS.DESC, label: "Newest first" },
+  { value: SORT_ORDERS.ASC, label: "Oldest first" },
 ]
 
 const docTypeFilterOptions: SelectOption[] = [
@@ -28,8 +29,8 @@ const docTypeFilterOptions: SelectOption[] = [
 ]
 
 const widgets = ref<Widget[]>([])
-const orderBy = ref<"updatedAt" | "createdAt">("createdAt")
-const order = ref<"asc" | "desc">("desc")
+const orderBy = ref<SortField>(SORT_FIELDS.CREATED_AT)
+const order = ref<SortOrder>(SORT_ORDERS.DESC)
 const filterDocType = ref<DocType | "">("")
 const showAddModal = ref(false)
 

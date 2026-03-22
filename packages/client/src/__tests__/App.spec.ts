@@ -2,6 +2,7 @@ import { describe, it, expect, vi, beforeEach } from "vitest"
 import { mount, flushPromises } from "@vue/test-utils"
 import App from "../App.vue"
 import * as widgetApi from "../api/widgetApi"
+import { SORT_FIELDS, SORT_ORDERS } from "../types/sorting"
 
 vi.mock("../api/widgetApi")
 
@@ -25,8 +26,8 @@ describe("App", () => {
     await flushPromises()
 
     expect(mockedGetWidgets).toHaveBeenCalledWith({
-      orderBy: "createdAt",
-      order: "desc",
+      orderBy: SORT_FIELDS.CREATED_AT,
+      order: SORT_ORDERS.DESC,
       docType: undefined,
     })
     expect(wrapper.findAll("[data-testid='widget-text']")).toHaveLength(1)

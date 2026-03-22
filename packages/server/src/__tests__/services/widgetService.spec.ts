@@ -1,8 +1,9 @@
 import { describe, it, expect, beforeEach, vi } from "vitest"
 import { WidgetService } from "../../services/widgetService.js"
-import { Widget } from "../../domain/widget.js"
-import { NotFoundError, ValidationError } from "../../domain/errors.js"
-import { WidgetRepository } from "../../domain/widgetRepository.js"
+import { Widget } from "common/widget"
+import { NotFoundError, ValidationError } from "common/errors"
+import type { WidgetRepository } from "../../repositories/widgetRepository.js"
+import { SORT_FIELDS, SORT_ORDERS } from "common/sorting"
 
 function createMockRepo(): WidgetRepository {
   return {
@@ -67,7 +68,7 @@ describe("WidgetService", () => {
     )
     vi.mocked(repo.findAll).mockReturnValue([newer, older])
 
-    const result = service.getAll({ orderBy: "createdAt", order: "asc" })
+    const result = service.getAll({ orderBy: SORT_FIELDS.CREATED_AT, order: SORT_ORDERS.ASC })
     expect(result[0].id).toBe(1)
     expect(result[1].id).toBe(2)
   })

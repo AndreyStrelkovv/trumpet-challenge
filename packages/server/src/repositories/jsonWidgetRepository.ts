@@ -1,7 +1,8 @@
-import { Db } from "../db.js";
-import { Widget, DocType } from "../domain/widget.js";
-import { NotFoundError } from "../domain/errors.js";
-import { WidgetRepository } from "../domain/widgetRepository.js";
+import { Db } from "../db.js"
+import { Widget } from "common/widget"
+import type { DocType } from "common/widget"
+import { NotFoundError } from "common/errors"
+import type { WidgetRepository } from "./widgetRepository.js"
 
 function widgetParser(dbWidget: {
   id: number;

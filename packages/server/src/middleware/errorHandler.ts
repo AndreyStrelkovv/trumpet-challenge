@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express"
-import { NotFoundError, ValidationError } from "../domain/errors.js"
+import { NotFoundError, ValidationError } from "common/errors"
 
 export function errorHandler(
   err: Error,

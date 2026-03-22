@@ -1,10 +1,13 @@
-import { Widget, DocType } from "../domain/widget.js"
-import { NotFoundError } from "../domain/errors.js"
-import { WidgetRepository } from "../domain/widgetRepository.js"
+import { Widget } from "common/widget"
+import type { DocType } from "common/widget"
+import { NotFoundError } from "common/errors"
+import type { WidgetRepository } from "../repositories/widgetRepository.js"
+import { SORT_FIELDS, SORT_ORDERS } from "common/sorting"
+import type { SortField, SortOrder } from "common/sorting"
 
 export interface GetAllOptions {
-  orderBy?: "createdAt" | "updatedAt"
-  order?: "asc" | "desc"
+  orderBy?: SortField
+  order?: SortOrder
   docType?: DocType
 }
 
@@ -18,12 +21,12 @@ export class WidgetService {
       widgets = widgets.filter((widget) => widget.docType === options.docType)
     }
 
-    const orderBy = options?.orderBy ?? "updatedAt"
-    const order = options?.order ?? "desc"
+    const orderBy = options?.orderBy ?? SORT_FIELDS.UPDATED_AT
+    const order = options?.order ?? SORT_ORDERS.DESC
 
     widgets.sort((first, second) => {
       const diff = first[orderBy].getTime() - second[orderBy].getTime()
-      return order === "asc" ? diff : -diff
+      return order === SORT_ORDERS.ASC ? diff : -diff
     })
 
     return widgets

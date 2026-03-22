@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach } from "vitest"
 import { createDb } from "../../db.js"
 import { JsonWidgetRepository } from "../../repositories/jsonWidgetRepository.js"
-import { NotFoundError } from "../../domain/errors.js"
+import { NotFoundError } from "common/errors"
 
 describe("JsonWidgetRepository", () => {
   let repo: JsonWidgetRepository

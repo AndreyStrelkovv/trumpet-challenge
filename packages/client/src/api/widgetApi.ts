@@ -1,9 +1,10 @@
 import { get, post, put, del } from "./httpClient"
 import type { Widget, DocType } from "../types/widget"
+import type { SortField, SortOrder } from "../types/sorting"
 
 interface GetWidgetsParams {
-  orderBy?: "createdAt" | "updatedAt"
-  order?: "asc" | "desc"
+  orderBy?: SortField
+  order?: SortOrder
   docType?: DocType
 }
 
@@ -15,7 +16,7 @@ export function getWidgets(params?: GetWidgetsParams): Promise<Widget[]> {
   return get("/widgets", query)
 }
 
-export function createWidget(payload: { text: string; docType?: DocType }) {
+export function createWidget(payload: { text: string; docType?: DocType }): Promise<Widget> {
   return post("/widgets", payload)
 }
 

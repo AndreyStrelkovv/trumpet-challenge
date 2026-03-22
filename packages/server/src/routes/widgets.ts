@@ -1,7 +1,10 @@
 import { Router, NextFunction, Request, Response } from "express"
 import { WidgetService } from "../services/widgetService.js"
-import { isValidDocType, DocType } from "../domain/widget.js"
-import { ValidationError } from "../domain/errors.js"
+import { isValidDocType } from "common/widget"
+import type { DocType } from "common/widget"
+import { ValidationError } from "common/errors"
+import { VALID_SORT_FIELDS, VALID_SORT_ORDERS } from "common/sorting"
+import type { SortField, SortOrder } from "common/sorting"
 
 function serialize(w: {
   id: number
@@ -19,9 +22,6 @@ function serialize(w: {
   }
 }
 
-const VALID_ORDER_BY = ["createdAt", "updatedAt"] as const
-const VALID_ORDER = ["asc", "desc"] as const
-
 export function widgetRoutes(service: WidgetService) {
   const router = Router()
 
@@ -29,10 +29,10 @@ export function widgetRoutes(service: WidgetService) {
     try {
       const { orderBy, order, docType } = req.query
 
-      if (orderBy && !VALID_ORDER_BY.includes(orderBy as any)) {
+      if (orderBy && !VALID_SORT_FIELDS.includes(orderBy as any)) {
         throw new ValidationError(`Invalid orderBy: ${orderBy}`)
       }
-      if (order && !VALID_ORDER.includes(order as any)) {
+      if (order && !VALID_SORT_ORDERS.includes(order as any)) {
         throw new ValidationError(`Invalid order: ${order}`)
       }
       if (docType && !isValidDocType(docType as string)) {
@@ -40,8 +40,8 @@ export function widgetRoutes(service: WidgetService) {
       }
 
       const widgets = service.getAll({
-        orderBy: orderBy as "createdAt" | "updatedAt" | undefined,
-        order: order as "asc" | "desc" | undefined,
+        orderBy: orderBy as SortField | undefined,
+        order: order as SortOrder | undefined,
         docType: docType as DocType | undefined,
       })
       res.json(widgets.map(serialize))

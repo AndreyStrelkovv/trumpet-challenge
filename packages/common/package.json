@@ -1,0 +1,26 @@
+{
+  "name": "common",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc"
+  },
+  "exports": {
+    "./errors": {
+      "types": "./src/errors.ts",
+      "import": "./dist/errors.js",
+      "default": "./src/errors.ts"
+    },
+    "./sorting": {
+      "types": "./src/sorting.ts",
+      "import": "./dist/sorting.js",
+      "default": "./src/sorting.ts"
+    },
+    "./widget": {
+      "types": "./src/widget.ts",
+      "import": "./dist/widget.js",
+      "default": "./src/widget.ts"
+    }
+  }
+}

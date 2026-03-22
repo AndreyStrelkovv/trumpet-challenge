@@ -3,7 +3,7 @@ import {
   DomainError,
   NotFoundError,
   ValidationError,
-} from "../../domain/errors.js"
+} from "common/errors"
 
 describe("DomainError", () => {
   it("is an instance of Error", () => {
