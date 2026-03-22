@@ -2,7 +2,23 @@
 import { ref, onMounted } from "vue"
 import TextWidget from "./components/TextWidget.vue"
 import EditWidgetModal from "./components/EditWidgetModal.vue"
+import TrumpetSelector, { type SelectOption } from "./components/TrumpetSelector.vue"
 import { DOC_TYPES, type Widget, type DocType } from "./types/widget"
+
+const orderByOptions: SelectOption[] = [
+  { value: "updatedAt", label: "Sort by Updated" },
+  { value: "createdAt", label: "Sort by Created" },
+]
+
+const orderOptions: SelectOption[] = [
+  { value: "desc", label: "Newest first" },
+  { value: "asc", label: "Oldest first" },
+]
+
+const docTypeFilterOptions: SelectOption[] = [
+  { value: "", label: "All doc types" },
+  ...DOC_TYPES.map((dt) => ({ value: dt, label: dt })),
+]
 
 const widgets = ref<Widget[]>([])
 const orderBy = ref<"updatedAt" | "createdAt">("createdAt")
@@ -43,48 +59,46 @@ onMounted(fetchWidgets)
 </script>
 
 <template>
-  <div class="min-h-screen bg-gray-50 p-8">
-    <div class="mx-auto max-w-2xl">
-      <h1 class="mb-6 text-2xl font-bold text-gray-900">Digital Sales Room</h1>
+  <div class="min-h-screen bg-slate-50">
+    <div class="border-b border-slate-200 bg-white">
+      <div class="mx-auto max-w-2xl px-8 py-8">
+        <h1 class="text-2xl font-bold text-slate-900">Digital Sales Room</h1>
+        <p class="mt-1 text-sm text-slate-500">Manage and organize your content widgets</p>
+      </div>
+    </div>
 
-      <div class="mb-4 flex flex-wrap items-center gap-3">
+    <div class="mx-auto max-w-2xl px-8 py-6">
+      <div class="mb-5 flex flex-wrap items-center gap-3">
         <button
           data-testid="add-widget-btn"
-          class="rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
+          class="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition-colors hover:bg-indigo-700"
           @click="openAddModal"
         >
-          Add Widget
+          + Add Widget
         </button>
 
-        <select
-          v-model="orderBy"
-          data-testid="order-by-select"
-          class="rounded border border-gray-300 px-2 py-2 text-sm"
-          @change="fetchWidgets"
-        >
-          <option value="updatedAt">Sort by Updated</option>
-          <option value="createdAt">Sort by Created</option>
-        </select>
+        <div class="ml-auto flex items-center gap-2">
+          <TrumpetSelector
+            v-model="orderBy"
+            :options="orderByOptions"
+            data-testid="order-by-select"
+            @change="fetchWidgets"
+          />
 
-        <select
-          v-model="order"
-          data-testid="order-select"
-          class="rounded border border-gray-300 px-2 py-2 text-sm"
-          @change="fetchWidgets"
-        >
-          <option value="desc">Newest first</option>
-          <option value="asc">Oldest first</option>
-        </select>
+          <TrumpetSelector
+            v-model="order"
+            :options="orderOptions"
+            data-testid="order-select"
+            @change="fetchWidgets"
+          />
 
-        <select
-          v-model="filterDocType"
-          data-testid="filter-doctype-select"
-          class="rounded border border-gray-300 px-2 py-2 text-sm"
-          @change="fetchWidgets"
-        >
-          <option value="">All doc types</option>
-          <option v-for="dt in DOC_TYPES" :key="dt" :value="dt">{{ dt }}</option>
-        </select>
+          <TrumpetSelector
+            v-model="filterDocType"
+            :options="docTypeFilterOptions"
+            data-testid="filter-doctype-select"
+            @change="fetchWidgets"
+          />
+        </div>
       </div>
 
       <div class="flex flex-col gap-4">

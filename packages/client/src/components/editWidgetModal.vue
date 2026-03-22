@@ -1,6 +1,13 @@
 <script setup lang="ts">
 import { ref } from "vue"
 import { DOC_TYPES, type DocType } from "../types/widget"
+import TrumpetTextarea from "./TrumpetTextarea.vue"
+import TrumpetSelector, { type SelectOption } from "./TrumpetSelector.vue"
+
+const docTypeOptions: SelectOption[] = [
+  { value: undefined, label: "No doc type" },
+  ...DOC_TYPES.map((dt) => ({ value: dt, label: dt })),
+]
 
 const props = defineProps<{
   text: string
@@ -27,39 +34,35 @@ function handleSave() {
 </script>
 
 <template>
-  <div data-testid="modal-backdrop" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-    <div class="w-full max-w-lg rounded-lg bg-white p-6 shadow-lg">
-      <h2 class="mb-4 text-lg font-semibold text-gray-900">Edit Widget</h2>
+  <div data-testid="modal-backdrop" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+    <div class="w-full max-w-lg rounded-xl border border-slate-200 bg-white p-6 shadow-xl">
+      <h2 class="mb-5 text-lg font-semibold text-slate-900">Edit Widget</h2>
 
-      <textarea
-        v-model="editText"
-        class="mb-3 w-full resize-y rounded border p-2 text-sm focus:outline-none"
-        :class="textError ? 'border-red-500 focus:border-red-500' : 'border-gray-300 focus:border-blue-500'"
-        rows="4"
-        placeholder="Enter text..."
-      />
-      <p v-if="textError" data-testid="text-error" class="mb-3 text-sm text-red-600">{{ textError }}</p>
-
-      <select
+      <TrumpetSelector
         v-model="editDocType"
+        :options="docTypeOptions"
         data-testid="modal-doctype-select"
-        class="mb-4 w-full rounded border border-gray-300 px-2 py-1 text-sm focus:border-blue-500 focus:outline-none"
-      >
-        <option :value="undefined">No doc type</option>
-        <option v-for="dt in DOC_TYPES" :key="dt" :value="dt">{{ dt }}</option>
-      </select>
+        class="mb-4 w-full"
+      />
+
+      <TrumpetTextarea
+        v-model="editText"
+        :error="textError"
+        placeholder="Enter text..."
+        class="mb-5"
+      />
 
       <div class="flex justify-end gap-2">
         <button
           data-testid="modal-cancel-btn"
-          class="rounded border border-gray-300 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+          class="rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50"
           @click="emit('cancel')"
         >
           Cancel
         </button>
         <button
           data-testid="modal-save-btn"
-          class="rounded bg-blue-600 px-4 py-2 text-sm text-white hover:bg-blue-700"
+          class="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition-colors hover:bg-indigo-700"
           @click="handleSave"
         >
           Save

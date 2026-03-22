@@ -42,39 +42,45 @@ function formatDate(iso: string) {
 </script>
 
 <template>
-  <div class="rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
-    <div data-testid="widget-meta" class="mb-2 flex items-center gap-2 text-xs text-gray-400">
-      <span>Created: {{ formatDate(createdAt) }}</span>
-      <span>·</span>
-      <span>Updated: {{ formatDate(updatedAt) }}</span>
-      <span
-        v-if="initialDocType"
-        data-testid="doctype-badge"
-        class="rounded bg-blue-100 px-2 py-0.5 text-xs text-blue-700"
-      >
-        {{ initialDocType }}
-      </span>
-    </div>
+  <div class="group rounded-xl border border-slate-200 bg-white p-5 shadow-sm transition-all hover:border-slate-300 hover:shadow-md">
+    <div class="flex items-start gap-4">
+      <div class="mt-1 h-full w-1 shrink-0 rounded-full bg-indigo-500" />
 
-    <p data-testid="widget-text" class="mb-2 whitespace-pre-wrap text-sm text-gray-800">
-      {{ initialText }}
-    </p>
+      <div class="min-w-0 flex-1">
+        <div data-testid="widget-meta" class="mb-2 flex items-center gap-2 text-xs text-slate-400">
+          <span>Created: {{ formatDate(createdAt) }}</span>
+          <span class="text-slate-300">·</span>
+          <span>Updated: {{ formatDate(updatedAt) }}</span>
+          <span
+            v-if="initialDocType"
+            data-testid="doctype-badge"
+            class="rounded-md bg-indigo-50 px-2 py-0.5 text-xs font-medium text-indigo-600"
+          >
+            {{ initialDocType }}
+          </span>
+        </div>
 
-    <div class="flex items-center gap-2">
-      <button
-        data-testid="edit-btn"
-        class="rounded bg-blue-600 px-3 py-1 text-sm text-white hover:bg-blue-700"
-        @click="editing = true"
-      >
-        Edit
-      </button>
-      <button
-        data-testid="delete-btn"
-        class="rounded bg-red-600 px-3 py-1 text-sm text-white hover:bg-red-700"
-        @click="remove"
-      >
-        Delete
-      </button>
+        <p data-testid="widget-text" class="mb-3 whitespace-pre-wrap text-sm font-medium leading-relaxed text-slate-800">
+          {{ initialText }}
+        </p>
+
+        <div class="flex items-center gap-2">
+          <button
+            data-testid="edit-btn"
+            class="rounded-lg bg-indigo-600 px-3 py-1.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-indigo-700"
+            @click="editing = true"
+          >
+            Edit
+          </button>
+          <button
+            data-testid="delete-btn"
+            class="rounded-lg bg-rose-600 px-3 py-1.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-rose-700"
+            @click="remove"
+          >
+            Delete
+          </button>
+        </div>
+      </div>
     </div>
 
     <EditWidgetModal
