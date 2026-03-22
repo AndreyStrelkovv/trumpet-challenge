@@ -39,9 +39,8 @@ export class WidgetService {
   update(id: number, text: string, docType?: DocType): Widget {
     const widget = this.repo.findById(id)
     if (!widget) throw new NotFoundError("Widget", id)
-    widget.updateText(text)
-    widget.updateDocType(docType)
-    this.repo.save(widget)
+    widget.update(text, docType)
+    this.repo.update(widget)
     return widget
   }
 

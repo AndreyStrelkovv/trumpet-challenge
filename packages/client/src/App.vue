@@ -138,6 +138,7 @@ onMounted(fetchWidgets)
         <EditWidgetModal
           v-if="showAddModal"
           text=""
+          title="Add Widget"
           @save="handleAddSave"
           @cancel="showAddModal = false"
         />

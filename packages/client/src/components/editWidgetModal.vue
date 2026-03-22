@@ -10,10 +10,14 @@ const docTypeOptions: SelectOption[] = [
   ...DOC_TYPES.map((docType) => ({ value: docType, label: docType })),
 ]
 
-const props = defineProps<{
-  text: string
-  docType?: DocType
-}>()
+const props = withDefaults(
+  defineProps<{
+    text: string
+    docType?: DocType
+    title?: string
+  }>(),
+  { title: "Edit Widget" },
+)
 
 const emit = defineEmits<{
   save: [payload: { text: string; docType?: DocType }]
@@ -37,7 +41,7 @@ const handleSave = () => {
 <template>
   <div data-testid="modal-backdrop" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
     <div class="w-full max-w-lg rounded-xl border border-slate-200 bg-white p-6 shadow-xl">
-      <h2 class="mb-5 text-lg font-semibold text-slate-900">Edit Widget</h2>
+      <h2 class="mb-5 text-lg font-semibold text-slate-900">{{ title }}</h2>
 
       <TrumpetSelector
         v-model="editDocType"

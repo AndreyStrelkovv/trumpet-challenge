@@ -10,7 +10,7 @@ function createMockRepo(): WidgetRepository {
     findAll: vi.fn(),
     findById: vi.fn(),
     create: vi.fn(),
-    save: vi.fn(),
+    update: vi.fn(),
     remove: vi.fn(),
   }
 }
@@ -119,7 +119,7 @@ describe("WidgetService", () => {
     const result = service.update(1, "new")
     expect(result.text).toBe("new")
     expect(repo.findById).toHaveBeenCalledWith(1)
-    expect(repo.save).toHaveBeenCalledWith(widget)
+    expect(repo.update).toHaveBeenCalledWith(widget)
   })
 
   it("update sets docType when provided", () => {

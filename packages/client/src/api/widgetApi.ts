@@ -1,4 +1,4 @@
-import { get, post, put, del } from "@/api/httpClient"
+import { get, post, put, remove } from "@/api/httpClient"
 import type { WidgetDTO as Widget, DocType } from "common/widget"
 import type { SortField, SortOrder } from "common/sorting"
 
@@ -27,4 +27,4 @@ export const updateWidget = (
 ): Promise<Widget> => put(`/widgets/${id}`, payload)
 
 export const deleteWidget = (id: number): Promise<void> =>
-  del(`/widgets/${id}`)
+  remove(`/widgets/${id}`)

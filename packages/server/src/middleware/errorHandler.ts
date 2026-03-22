@@ -8,7 +8,7 @@ export const errorHandler = (
   _next: NextFunction,
 ) => {
   if (err instanceof NotFoundError) {
-    res.status(404).json({ error: "Not found" })
+    res.status(404).json({ error: err.message })
     return
   }
   if (err instanceof ValidationError) {

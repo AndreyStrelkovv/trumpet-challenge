@@ -22,6 +22,17 @@ export interface WidgetDTO {
 
 const MAX_TEXT_LENGTH = 10000
 
+const validateText = (text: string) => {
+  if (!text.trim()) {
+    throw new ValidationError("Widget text cannot be empty")
+  }
+  if (text.length > MAX_TEXT_LENGTH) {
+    throw new ValidationError(
+      `Widget text cannot exceed ${MAX_TEXT_LENGTH} characters`,
+    )
+  }
+}
+
 export class Widget {
   private constructor(
     private readonly _id: number,
@@ -38,6 +49,10 @@ export class Widget {
     updatedAt?: Date,
     docType?: DocType,
   ): Widget {
+    validateText(text)
+    if (docType && !isValidDocType(docType)) {
+      throw new ValidationError(`Invalid doc type: ${docType}`)
+    }
     const now = new Date()
     return new Widget(id, text, createdAt ?? now, updatedAt ?? now, docType)
   }
@@ -62,24 +77,22 @@ export class Widget {
     return this._docType
   }
 
-  updateText(text: string): Widget {
-    if (!text.trim()) {
-      throw new ValidationError("Widget text cannot be empty")
+  toDTO(): WidgetDTO {
+    return {
+      id: this._id,
+      text: this._text,
+      createdAt: this._createdAt.toISOString(),
+      updatedAt: this._updatedAt.toISOString(),
+      ...(this._docType ? { docType: this._docType } : {}),
     }
-    if (text.length > MAX_TEXT_LENGTH) {
-      throw new ValidationError(
-        `Widget text cannot exceed ${MAX_TEXT_LENGTH} characters`,
-      )
-    }
-    this._text = text
-    this._updatedAt = new Date()
-    return this
   }
 
-  updateDocType(docType?: DocType): Widget {
+  update(text: string, docType?: DocType): Widget {
+    validateText(text)
     if (docType && !isValidDocType(docType)) {
       throw new ValidationError(`Invalid doc type: ${docType}`)
     }
+    this._text = text
     this._docType = docType
     this._updatedAt = new Date()
     return this

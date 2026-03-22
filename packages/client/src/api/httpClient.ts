@@ -1,7 +1,5 @@
-const BASE = "/api"
-
 const request = async (path: string, options?: RequestInit) => {
-  const response = await fetch(`${BASE}${path}`, options)
+  const response = await fetch(`/api${path}`, options)
   if (!response.ok) {
     throw new Error(
       `${options?.method ?? "GET"} ${path} failed: ${response.status}`,
@@ -39,5 +37,5 @@ export const put = <T>(
     body: JSON.stringify(body),
   })
 
-export const del = (path: string): Promise<void> =>
+export const remove = (path: string): Promise<void> =>
   request(path, { method: "DELETE" })

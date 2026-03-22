@@ -1,7 +1,7 @@
 import { readFileSync, writeFileSync, existsSync } from "fs"
 import { RawWidget, DbSchema } from "@/types/widget.js"
 
-export interface Db {
+export interface WidgetDb {
   getWidgets(): RawWidget[]
   createWidget(text: string, docType?: string): RawWidget
   updateWidget(
@@ -11,7 +11,7 @@ export interface Db {
   deleteWidget(id: number): boolean
 }
 
-export const createDb = (path: string): Db => {
+export const createDb = (path: string): WidgetDb => {
   const isMemory = path === ":memory:"
   let data: DbSchema = { nextId: 1, widgets: [] }
 

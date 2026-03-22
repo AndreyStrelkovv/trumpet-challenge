@@ -19,7 +19,7 @@ describe("errorHandler", () => {
     const res = createMockRes()
     errorHandler(new NotFoundError("Widget", 1), req, res, next)
     expect(res.status).toHaveBeenCalledWith(404)
-    expect(res.json).toHaveBeenCalledWith({ error: "Not found" })
+    expect(res.json).toHaveBeenCalledWith({ error: "Widget with id 1 not found" })
   })
 
   it("maps ValidationError to 400", () => {
