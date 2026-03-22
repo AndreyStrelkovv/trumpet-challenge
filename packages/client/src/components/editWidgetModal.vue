@@ -14,8 +14,14 @@ const emit = defineEmits<{
 
 const editText = ref(props.text)
 const editDocType = ref<DocType | undefined>(props.docType)
+const textError = ref("")
 
 function handleSave() {
+  if (!editText.value.trim()) {
+    textError.value = "Text is required"
+    return
+  }
+  textError.value = ""
   emit("save", { text: editText.value, docType: editDocType.value })
 }
 </script>
@@ -27,10 +33,13 @@ function handleSave() {
 
       <textarea
         v-model="editText"
-        class="mb-3 w-full resize-y rounded border border-gray-300 p-2 text-sm focus:border-blue-500 focus:outline-none"
+        class="w-full resize-y rounded border p-2 text-sm focus:outline-none"
+        :class="textError ? 'border-red-500 focus:border-red-500' : 'border-gray-300 focus:border-blue-500'"
         rows="4"
         placeholder="Enter text..."
       />
+      <p v-if="textError" data-testid="text-error" class="mb-3 text-sm text-red-600">{{ textError }}</p>
+      <div v-else class="mb-3" />
 
       <select
         v-model="editDocType"

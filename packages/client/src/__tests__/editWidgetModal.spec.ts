@@ -43,6 +43,35 @@ describe("EditWidgetModal", () => {
     expect(wrapper.find("[data-testid='modal-backdrop']").exists()).toBe(true)
   })
 
+  it("does not emit save and shows error when text is empty", async () => {
+    const wrapper = mount(EditWidgetModal, { props: { text: "" } })
+    await wrapper.find("[data-testid='modal-save-btn']").trigger("click")
+
+    expect(wrapper.emitted("save")).toBeFalsy()
+    expect(wrapper.find("[data-testid='text-error']").text()).toBe("Text is required")
+  })
+
+  it("does not emit save and shows error when text is only whitespace", async () => {
+    const wrapper = mount(EditWidgetModal, { props: { text: "   " } })
+    await wrapper.find("[data-testid='modal-save-btn']").trigger("click")
+
+    expect(wrapper.emitted("save")).toBeFalsy()
+    expect(wrapper.find("[data-testid='text-error']").text()).toBe("Text is required")
+  })
+
+  it("clears error when user types valid text and saves", async () => {
+    const wrapper = mount(EditWidgetModal, { props: { text: "" } })
+    await wrapper.find("[data-testid='modal-save-btn']").trigger("click")
+
+    expect(wrapper.find("[data-testid='text-error']").exists()).toBe(true)
+
+    await wrapper.find("textarea").setValue("valid text")
+    await wrapper.find("[data-testid='modal-save-btn']").trigger("click")
+
+    expect(wrapper.find("[data-testid='text-error']").exists()).toBe(false)
+    expect(wrapper.emitted("save")).toBeTruthy()
+  })
+
   it("works without initial docType", async () => {
     const wrapper = mount(EditWidgetModal, { props: { text: "test" } })
     await wrapper.find("[data-testid='modal-save-btn']").trigger("click")
