@@ -8,6 +8,7 @@ vi.mock("@/api/widgetApi")
 
 const mockedGetWidgets = vi.mocked(widgetApi.getWidgets)
 const mockedCreateWidget = vi.mocked(widgetApi.createWidget)
+const mockedDeleteWidget = vi.mocked(widgetApi.deleteWidget)
 
 const now = "2026-01-01T00:00:00.000Z"
 
@@ -76,6 +77,27 @@ describe("App", () => {
     expect(mockedGetWidgets).toHaveBeenCalledTimes(2)
     expect(wrapper.findAll("[data-testid='widget-text']")).toHaveLength(1)
     expect(wrapper.find("[data-testid='modal-backdrop']").exists()).toBe(false)
+  })
+
+  it("delete removes widget from list optimistically", async () => {
+    mockedGetWidgets.mockResolvedValueOnce([
+      { id: 1, text: "first", createdAt: now, updatedAt: now },
+      { id: 2, text: "second", createdAt: now, updatedAt: now },
+    ])
+    mockedDeleteWidget.mockResolvedValueOnce(undefined)
+
+    const wrapper = mount(App)
+    await flushPromises()
+
+    expect(wrapper.findAll("[data-testid='widget-text']")).toHaveLength(2)
+
+    const deleteButtons = wrapper.findAll("[data-testid='delete-btn']")
+    await deleteButtons[0].trigger("click")
+    await flushPromises()
+
+    expect(mockedDeleteWidget).toHaveBeenCalledWith(1)
+    expect(wrapper.findAll("[data-testid='widget-text']")).toHaveLength(1)
+    expect(wrapper.find("[data-testid='widget-text']").text()).toBe("second")
   })
 
   it("modal cancel closes modal without POST", async () => {
