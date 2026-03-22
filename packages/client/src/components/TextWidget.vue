@@ -5,6 +5,7 @@ import { relativeTime } from "../relativeTime"
 import { updateWidget, deleteWidget } from "../api/widgetApi"
 import EditWidgetModal from "./EditWidgetModal.vue"
 import DocTypeBadge from "./DocTypeBadge.vue"
+import TrumpetButton from "./TrumpetButton.vue"
 
 const props = defineProps<{
   id: number
@@ -65,23 +66,23 @@ function formatDate(iso: string) {
           {{ initialText }}
         </p>
 
-        <div
-          class="flex items-center gap-3 opacity-0 transition-opacity group-hover:opacity-100"
-        >
-          <button
+        <div class="flex items-center gap-3 transition-opacity">
+          <TrumpetButton
             data-testid="edit-btn"
-            class="rounded-lg border border-slate-300 px-3 py-1.5 text-sm font-medium text-slate-600 transition-colors hover:border-indigo-300 hover:text-indigo-600 hover:bg-indigo-50"
+            variant="secondary"
+            size="sm"
             @click="editing = true"
           >
             Edit
-          </button>
-          <button
+          </TrumpetButton>
+          <TrumpetButton
             data-testid="delete-btn"
-            class="text-sm font-medium text-rose-500 transition-colors hover:text-rose-700"
+            variant="danger"
+            size="sm"
             @click="remove"
           >
             Delete
-          </button>
+          </TrumpetButton>
         </div>
       </div>
     </div>

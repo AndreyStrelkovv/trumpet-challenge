@@ -16,7 +16,10 @@ export function getWidgets(params?: GetWidgetsParams): Promise<Widget[]> {
   return get("/widgets", query)
 }
 
-export function createWidget(payload: { text: string; docType?: DocType }): Promise<Widget> {
+export function createWidget(payload: {
+  text: string
+  docType?: DocType
+}): Promise<Widget> {
   return post("/widgets", payload)
 }
 
