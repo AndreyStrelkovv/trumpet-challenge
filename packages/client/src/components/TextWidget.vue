@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { ref } from "vue"
-import { type DocType } from "../types/widget"
-import { relativeTime } from "../relativeTime"
-import { updateWidget, deleteWidget } from "../api/widgetApi"
-import EditWidgetModal from "./EditWidgetModal.vue"
-import DocTypeBadge from "./DocTypeBadge.vue"
-import TrumpetButton from "./TrumpetButton.vue"
+import { type DocType } from "common/widget"
+import { relativeTime } from "@/relativeTime"
+import { updateWidget, deleteWidget } from "@/api/widgetApi"
+import EditWidgetModal from "@/components/EditWidgetModal.vue"
+import DocTypeBadge from "@/components/DocTypeBadge.vue"
+import TrumpetButton from "@/components/TrumpetButton.vue"
 
 const props = defineProps<{
   id: number

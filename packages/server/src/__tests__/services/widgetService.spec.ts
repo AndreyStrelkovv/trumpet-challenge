@@ -1,8 +1,8 @@
 import { describe, it, expect, beforeEach, vi } from "vitest"
-import { WidgetService } from "../../services/widgetService.js"
+import { WidgetService } from "@/services/widgetService.js"
 import { Widget } from "common/widget"
 import { NotFoundError, ValidationError } from "common/errors"
-import type { WidgetRepository } from "../../repositories/widgetRepository.js"
+import type { WidgetRepository } from "@/repositories/widgetRepository.js"
 import { SORT_FIELDS, SORT_ORDERS } from "common/sorting"
 
 function createMockRepo(): WidgetRepository {

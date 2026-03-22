@@ -1,8 +1,8 @@
 import express from "express"
 import cors from "cors"
-import { WidgetService } from "./services/widgetService.js"
-import { widgetRoutes } from "./routes/widgets.js"
-import { errorHandler } from "./middleware/errorHandler.js"
+import { WidgetService } from "@/services/widgetService.js"
+import { widgetRoutes } from "@/controllers/widgets.js"
+import { errorHandler } from "@/middleware/errorHandler.js"
 
 export function createApp(service: WidgetService) {
   const app = express()

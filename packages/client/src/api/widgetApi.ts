@@ -1,6 +1,6 @@
-import { get, post, put, del } from "./httpClient"
-import type { Widget, DocType } from "../types/widget"
-import type { SortField, SortOrder } from "../types/sorting"
+import { get, post, put, del } from "@/api/httpClient"
+import type { WidgetDTO as Widget, DocType } from "common/widget"
+import type { SortField, SortOrder } from "common/sorting"
 
 interface GetWidgetsParams {
   orderBy?: SortField

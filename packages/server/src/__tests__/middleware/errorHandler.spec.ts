@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from "vitest"
-import { errorHandler } from "../../middleware/errorHandler.js"
+import { errorHandler } from "@/middleware/errorHandler.js"
 import { NotFoundError, ValidationError } from "common/errors"
 import { Request, Response, NextFunction } from "express"
 

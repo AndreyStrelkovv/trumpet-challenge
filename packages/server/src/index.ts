@@ -1,10 +1,10 @@
 import path from "path"
 import { fileURLToPath } from "url"
 import { existsSync } from "fs"
-import { createApp } from "./app.js"
-import { createDb } from "./db.js"
-import { JsonWidgetRepository } from "./repositories/jsonWidgetRepository.js"
-import { WidgetService } from "./services/widgetService.js"
+import { createApp } from "@/app.js"
+import { createDb } from "@/db.js"
+import { JsonWidgetRepository } from "@/repositories/jsonWidgetRepository.js"
+import { WidgetService } from "@/services/widgetService.js"
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const rootDir = path.resolve(__dirname, "../../..")

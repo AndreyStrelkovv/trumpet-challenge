@@ -1,12 +1,12 @@
 import { readFileSync, writeFileSync, existsSync } from "fs"
-import { RawWidget, DbSchema } from "./types/widget.js"
+import { RawWidget, DbSchema } from "@/types/widget.js"
 
 export interface Db {
   getWidgets(): RawWidget[]
   createWidget(text: string, docType?: string): RawWidget
   updateWidget(
     id: number,
-    fields: { text?: string; docType?: string | null; updatedAt?: string },
+    fields: { text: string; docType: string | null; updatedAt: string },
   ): RawWidget | null
   deleteWidget(id: number): boolean
 }
@@ -45,10 +45,10 @@ export function createDb(path: string): Db {
     updateWidget(id, fields) {
       const widget = data.widgets.find((record) => record.id === id)
       if (!widget) return null
-      if (fields.text) widget.text = fields.text
-      if (fields.docType === null) delete widget.docType
-      else if (fields.docType) widget.docType = fields.docType
-      if (fields.updatedAt) widget.updatedAt = fields.updatedAt
+      widget.text = fields.text
+      widget.updatedAt = fields.updatedAt
+      if (fields.docType) widget.docType = fields.docType
+      else delete widget.docType
       persist()
       return widget
     },

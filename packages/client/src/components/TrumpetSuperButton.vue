@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import PlusIcon from "./illustrations/PlusIcon.vue"
+import PlusIcon from "@/components/illustrations/PlusIcon.vue"
 
 defineEmits<{
   click: []

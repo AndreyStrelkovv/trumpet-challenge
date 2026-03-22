@@ -1,7 +1,7 @@
 import { Widget } from "common/widget"
 import type { DocType } from "common/widget"
 import { NotFoundError } from "common/errors"
-import type { WidgetRepository } from "../repositories/widgetRepository.js"
+import type { WidgetRepository } from "@/repositories/widgetRepository.js"
 import { SORT_FIELDS, SORT_ORDERS } from "common/sorting"
 import type { SortField, SortOrder } from "common/sorting"
 
@@ -45,7 +45,7 @@ export class WidgetService {
     return widget
   }
 
-  delete(id: number) {
-    this.repo.remove(id)
+  delete(id: number): number {
+    return this.repo.remove(id)
   }
 }

@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { ref } from "vue"
-import { DOC_TYPES, type DocType } from "../types/widget"
-import TrumpetTextarea from "./TrumpetTextarea.vue"
-import TrumpetSelector, { type SelectOption } from "./TrumpetSelector.vue"
-import TrumpetButton from "./TrumpetButton.vue"
+import { DOC_TYPES, type DocType } from "common/widget"
+import TrumpetTextarea from "@/components/TrumpetTextarea.vue"
+import TrumpetSelector, { type SelectOption } from "@/components/TrumpetSelector.vue"
+import TrumpetButton from "@/components/TrumpetButton.vue"
 
 const docTypeOptions: SelectOption[] = [
   { value: undefined, label: "No doc type" },

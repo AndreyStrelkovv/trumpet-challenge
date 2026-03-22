@@ -1,9 +1,9 @@
 import { describe, it, expect, beforeEach } from "vitest"
 import request from "supertest"
-import { createApp } from "../../app.js"
-import { createDb } from "../../db.js"
-import { JsonWidgetRepository } from "../../repositories/jsonWidgetRepository.js"
-import { WidgetService } from "../../services/widgetService.js"
+import { createApp } from "@/app.js"
+import { createDb } from "@/db.js"
+import { JsonWidgetRepository } from "@/repositories/jsonWidgetRepository.js"
+import { WidgetService } from "@/services/widgetService.js"
 
 describe("Widget API", () => {
   let app: ReturnType<typeof createApp>

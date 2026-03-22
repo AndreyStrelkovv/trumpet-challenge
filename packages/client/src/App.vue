@@ -1,17 +1,17 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue"
-import TextWidget from "./components/TextWidget.vue"
-import EditWidgetModal from "./components/EditWidgetModal.vue"
+import TextWidget from "@/components/TextWidget.vue"
+import EditWidgetModal from "@/components/EditWidgetModal.vue"
 import TrumpetSelector, {
   type SelectOption,
-} from "./components/TrumpetSelector.vue"
-import SortIcon from "./components/illustrations/SortIcon.vue"
-import FilterIcon from "./components/illustrations/FilterIcon.vue"
-import EmptyBoxIcon from "./components/illustrations/EmptyBoxIcon.vue"
-import TrumpetSuperButton from "./components/TrumpetSuperButton.vue"
-import { DOC_TYPES, type Widget, type DocType } from "./types/widget"
-import { SORT_FIELDS, SORT_ORDERS, type SortField, type SortOrder } from "./types/sorting"
-import { getWidgets, createWidget } from "./api/widgetApi"
+} from "@/components/TrumpetSelector.vue"
+import SortIcon from "@/components/illustrations/SortIcon.vue"
+import FilterIcon from "@/components/illustrations/FilterIcon.vue"
+import EmptyBoxIcon from "@/components/illustrations/EmptyBoxIcon.vue"
+import TrumpetSuperButton from "@/components/TrumpetSuperButton.vue"
+import { DOC_TYPES, type WidgetDTO as Widget, type DocType } from "common/widget"
+import { SORT_FIELDS, SORT_ORDERS, type SortField, type SortOrder } from "common/sorting"
+import { getWidgets, createWidget } from "@/api/widgetApi"
 
 const orderByOptions: SelectOption[] = [
   { value: SORT_FIELDS.UPDATED_AT, label: "Sort by Updated" },
@@ -47,8 +47,8 @@ function openAddModal() {
 }
 
 async function handleAddSave(payload: { text: string; docType?: DocType }) {
-  const widget = await createWidget(payload)
-  widgets.value.unshift(widget)
+  await createWidget(payload)
+  await fetchWidgets()
   showAddModal.value = false
 }
 

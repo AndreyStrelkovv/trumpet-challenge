@@ -63,7 +63,7 @@ export class Widget {
     return this._docType
   }
 
-  updateText(text: string) {
+  updateText(text: string): Widget {
     if (!text.trim()) {
       throw new ValidationError("Widget text cannot be empty")
     }
@@ -74,13 +74,12 @@ export class Widget {
     }
     this._text = text
     this._updatedAt = new Date()
+    return this
   }
 
-  updateDocType(docType?: DocType) {
-    if (docType && !isValidDocType(docType)) {
-      throw new ValidationError(`Invalid doc type: ${docType}`)
-    }
+  updateDocType(docType?: DocType): Widget {
     this._docType = docType
     this._updatedAt = new Date()
+    return this
   }
 }

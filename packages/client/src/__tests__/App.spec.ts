@@ -1,10 +1,10 @@
 import { describe, it, expect, vi, beforeEach } from "vitest"
 import { mount, flushPromises } from "@vue/test-utils"
-import App from "../App.vue"
-import * as widgetApi from "../api/widgetApi"
-import { SORT_FIELDS, SORT_ORDERS } from "../types/sorting"
+import App from "@/App.vue"
+import * as widgetApi from "@/api/widgetApi"
+import { SORT_FIELDS, SORT_ORDERS } from "common/sorting"
 
-vi.mock("../api/widgetApi")
+vi.mock("@/api/widgetApi")
 
 const mockedGetWidgets = vi.mocked(widgetApi.getWidgets)
 const mockedCreateWidget = vi.mocked(widgetApi.createWidget)
@@ -44,7 +44,7 @@ describe("App", () => {
     expect(wrapper.find("[data-testid='modal-backdrop']").exists()).toBe(true)
   })
 
-  it("modal save POSTs with text and docType, adds widget to list", async () => {
+  it("modal save POSTs with text and docType, re-fetches list", async () => {
     mockedCreateWidget.mockResolvedValueOnce({
       id: 1,
       text: "hello",
@@ -56,6 +56,10 @@ describe("App", () => {
     const wrapper = mount(App)
     await flushPromises()
 
+    mockedGetWidgets.mockResolvedValueOnce([
+      { id: 1, text: "hello", createdAt: now, updatedAt: now, docType: "DOC_TYPE_1" },
+    ])
+
     await wrapper.find("[data-testid='add-widget-btn']").trigger("click")
     await flushPromises()
 
@@ -63,11 +67,13 @@ describe("App", () => {
     await wrapper.find("[data-testid='modal-doctype-select']").setValue("DOC_TYPE_1")
     await wrapper.find("[data-testid='modal-save-btn']").trigger("click")
     await flushPromises()
+    await flushPromises()
 
     expect(mockedCreateWidget).toHaveBeenCalledWith({
       text: "hello",
       docType: "DOC_TYPE_1",
     })
+    expect(mockedGetWidgets).toHaveBeenCalledTimes(2)
     expect(wrapper.findAll("[data-testid='widget-text']")).toHaveLength(1)
     expect(wrapper.find("[data-testid='modal-backdrop']").exists()).toBe(false)
   })

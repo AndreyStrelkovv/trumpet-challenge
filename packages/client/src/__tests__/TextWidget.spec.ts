@@ -1,10 +1,10 @@
 import { describe, it, expect, vi, beforeEach } from "vitest"
 import { mount, flushPromises } from "@vue/test-utils"
-import TextWidget from "../components/TextWidget.vue"
-import EditWidgetModal from "../components/EditWidgetModal.vue"
-import * as widgetApi from "../api/widgetApi"
+import TextWidget from "@/components/TextWidget.vue"
+import EditWidgetModal from "@/components/EditWidgetModal.vue"
+import * as widgetApi from "@/api/widgetApi"
 
-vi.mock("../api/widgetApi")
+vi.mock("@/api/widgetApi")
 
 const mockedUpdateWidget = vi.mocked(widgetApi.updateWidget)
 const mockedDeleteWidget = vi.mocked(widgetApi.deleteWidget)

@@ -1,24 +1,18 @@
 import { Router, NextFunction, Request, Response } from "express"
-import { WidgetService } from "../services/widgetService.js"
-import { isValidDocType } from "common/widget"
+import { WidgetService } from "@/services/widgetService.js"
+import { Widget, isValidDocType } from "common/widget"
 import type { DocType } from "common/widget"
 import { ValidationError } from "common/errors"
 import { VALID_SORT_FIELDS, VALID_SORT_ORDERS } from "common/sorting"
 import type { SortField, SortOrder } from "common/sorting"
 
-function serialize(w: {
-  id: number
-  text: string
-  createdAt: Date
-  updatedAt: Date
-  docType?: DocType
-}) {
+function serialize(widget: Widget) {
   return {
-    id: w.id,
-    text: w.text,
-    createdAt: w.createdAt.toISOString(),
-    updatedAt: w.updatedAt.toISOString(),
-    ...(w.docType ? { docType: w.docType } : {}),
+    id: widget.id,
+    text: widget.text,
+    createdAt: widget.createdAt.toISOString(),
+    updatedAt: widget.updatedAt.toISOString(),
+    ...(widget.docType ? { docType: widget.docType } : {}),
   }
 }
 
@@ -40,9 +34,9 @@ export function widgetRoutes(service: WidgetService) {
       }
 
       const widgets = service.getAll({
-        orderBy: orderBy as SortField | undefined,
-        order: order as SortOrder | undefined,
-        docType: docType as DocType | undefined,
+        orderBy: orderBy as SortField,
+        order: order as SortOrder,
+        docType: docType as DocType,
       })
       res.json(widgets.map(serialize))
     } catch (err) {
@@ -69,6 +63,9 @@ export function widgetRoutes(service: WidgetService) {
   router.put("/:id", (req: Request, res: Response, next: NextFunction) => {
     try {
       const { text, docType } = req.body
+      if (!text && !text.trim()) {
+        throw new ValidationError("Widget text cannot be empty")
+      }
       if (docType && !isValidDocType(docType)) {
         throw new ValidationError(`Invalid docType: ${docType}`)
       }

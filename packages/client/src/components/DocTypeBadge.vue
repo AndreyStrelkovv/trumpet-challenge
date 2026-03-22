@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from "vue"
-import { type DocType } from "../types/widget"
+import { type DocType } from "common/widget"
 
 const props = defineProps<{
   docType: DocType
