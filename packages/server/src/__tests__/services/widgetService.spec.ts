@@ -129,11 +129,11 @@ describe("WidgetService", () => {
     expect(result.docType).toBe("DOC_TYPE_2")
   })
 
-  it("update clears docType when null", () => {
+  it("update clears docType when undefined", () => {
     const widget = Widget.create(1, "old", undefined, undefined, "DOC_TYPE_1")
     vi.mocked(repo.findById).mockReturnValue(widget)
 
-    const result = service.update(1, "new", null)
+    const result = service.update(1, "new", undefined)
     expect(result.docType).toBeUndefined()
   })
 

@@ -3,7 +3,13 @@ import { WidgetService } from "../services/widgetService.js"
 import { isValidDocType, DocType } from "../domain/widget.js"
 import { ValidationError } from "../domain/errors.js"
 
-function serialize(w: { id: number; text: string; createdAt: Date; updatedAt: Date; docType?: DocType }) {
+function serialize(w: {
+  id: number
+  text: string
+  createdAt: Date
+  updatedAt: Date
+  docType?: DocType
+}) {
   return {
     id: w.id,
     text: w.text,
@@ -47,7 +53,7 @@ export function widgetRoutes(service: WidgetService) {
   router.post("/", (req: Request, res: Response, next: NextFunction) => {
     try {
       const { text, docType } = req.body ?? {}
-      if (!text) {
+      if (!text?.trim()) {
         throw new ValidationError("Widget text is required")
       }
       if (docType && !isValidDocType(docType)) {

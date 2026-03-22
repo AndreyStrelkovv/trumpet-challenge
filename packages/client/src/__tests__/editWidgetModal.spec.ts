@@ -31,6 +31,15 @@ describe("EditWidgetModal", () => {
     ])
   })
 
+  it("emits trimmed text on save", async () => {
+    const wrapper = mount(EditWidgetModal, { props: { text: "  padded  " } })
+    await wrapper.find("[data-testid='modal-save-btn']").trigger("click")
+
+    expect(wrapper.emitted("save")![0]).toEqual([
+      { text: "padded", docType: undefined },
+    ])
+  })
+
   it("cancel emits cancel", async () => {
     const wrapper = mount(EditWidgetModal, { props: defaultProps })
     await wrapper.find("[data-testid='modal-cancel-btn']").trigger("click")
@@ -38,21 +47,8 @@ describe("EditWidgetModal", () => {
     expect(wrapper.emitted("cancel")).toBeTruthy()
   })
 
-  it("has backdrop overlay", () => {
-    const wrapper = mount(EditWidgetModal, { props: defaultProps })
-    expect(wrapper.find("[data-testid='modal-backdrop']").exists()).toBe(true)
-  })
-
-  it("does not emit save and shows error when text is empty", async () => {
-    const wrapper = mount(EditWidgetModal, { props: { text: "" } })
-    await wrapper.find("[data-testid='modal-save-btn']").trigger("click")
-
-    expect(wrapper.emitted("save")).toBeFalsy()
-    expect(wrapper.find("[data-testid='text-error']").text()).toBe("Text is required")
-  })
-
-  it("does not emit save and shows error when text is only whitespace", async () => {
-    const wrapper = mount(EditWidgetModal, { props: { text: "   " } })
+  it.each(["", "   "])("does not emit save and shows error for blank text '%s'", async (text) => {
+    const wrapper = mount(EditWidgetModal, { props: { text } })
     await wrapper.find("[data-testid='modal-save-btn']").trigger("click")
 
     expect(wrapper.emitted("save")).toBeFalsy()

@@ -10,12 +10,11 @@ function widgetParser(dbWidget: {
   updatedAt?: string;
   docType?: string;
 }): Widget {
-  const fallbackDate = new Date(0);
   return Widget.create(
     dbWidget.id,
     dbWidget.text,
-    dbWidget.createdAt ? new Date(dbWidget.createdAt) : fallbackDate,
-    dbWidget.updatedAt ? new Date(dbWidget.updatedAt) : fallbackDate,
+    dbWidget.createdAt ? new Date(dbWidget.createdAt) : new Date(0),
+    dbWidget.updatedAt ? new Date(dbWidget.updatedAt) : new Date(0),
     dbWidget.docType as DocType | undefined,
   );
 }

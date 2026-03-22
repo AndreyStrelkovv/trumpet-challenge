@@ -22,7 +22,7 @@ function handleSave() {
     return
   }
   textError.value = ""
-  emit("save", { text: editText.value, docType: editDocType.value })
+  emit("save", { text: editText.value.trim(), docType: editDocType.value })
 }
 </script>
 
@@ -33,13 +33,12 @@ function handleSave() {
 
       <textarea
         v-model="editText"
-        class="w-full resize-y rounded border p-2 text-sm focus:outline-none"
+        class="mb-3 w-full resize-y rounded border p-2 text-sm focus:outline-none"
         :class="textError ? 'border-red-500 focus:border-red-500' : 'border-gray-300 focus:border-blue-500'"
         rows="4"
         placeholder="Enter text..."
       />
       <p v-if="textError" data-testid="text-error" class="mb-3 text-sm text-red-600">{{ textError }}</p>
-      <div v-else class="mb-3" />
 
       <select
         v-model="editDocType"

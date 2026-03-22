@@ -24,10 +24,10 @@ describe("Widget", () => {
     expect(w.text).toBe("new")
   })
 
-  it("throws ValidationError for empty text update", () => {
+  it.each(["", "   "])("throws ValidationError for blank text update '%s'", (text) => {
     const w = Widget.create(1, "existing")
-    expect(() => w.updateText("")).toThrow(ValidationError)
-    expect(() => w.updateText("")).toThrow("Widget text cannot be empty")
+    expect(() => w.updateText(text)).toThrow(ValidationError)
+    expect(() => w.updateText(text)).toThrow("Widget text cannot be empty")
   })
 
   it("throws ValidationError when text exceeds max length", () => {

@@ -56,7 +56,7 @@ export class Widget {
   }
 
   updateText(text: string) {
-    if (text.length === 0) {
+    if (!text.trim()) {
       throw new ValidationError("Widget text cannot be empty")
     }
     if (text.length > MAX_TEXT_LENGTH) {

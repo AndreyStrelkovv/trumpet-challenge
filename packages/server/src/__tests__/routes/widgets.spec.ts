@@ -35,10 +35,10 @@ describe("Widget API", () => {
     expect(list.body).toHaveLength(1)
   })
 
-  it("POST /api/widgets with empty text returns 400", async () => {
+  it.each(["", "   "])("POST /api/widgets with blank text '%s' returns 400", async (text) => {
     const res = await request(app)
       .post("/api/widgets")
-      .send({ text: "" })
+      .send({ text })
     expect(res.status).toBe(400)
   })
 
@@ -94,9 +94,9 @@ describe("Widget API", () => {
     expect(res.status).toBe(404)
   })
 
-  it("PUT /api/widgets/:id returns 400 for empty text", async () => {
+  it.each(["", "   "])("PUT /api/widgets/:id returns 400 for blank text '%s'", async (text) => {
     await request(app).post("/api/widgets").send({ text: "initial" })
-    const res = await request(app).put("/api/widgets/1").send({ text: "" })
+    const res = await request(app).put("/api/widgets/1").send({ text })
     expect(res.status).toBe(400)
     expect(res.body.error).toBe("Widget text cannot be empty")
   })
