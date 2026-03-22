@@ -4,6 +4,7 @@
 
 - PascalCase for Vue component files (e.g. `EditWidgetModal.vue`)
 - camelCase for all other files (e.g. `widgetService.ts`, not `widget-service.ts`)
+- No single-letter variable names, including lambda params — use full descriptive names
 
 ## TypeScript
 
@@ -12,6 +13,9 @@
 - Meaningful return types — methods should return useful values (e.g. `save` returns saved entity, `remove` returns removed id)
 - Avoid explicit `undefined` — prefer optional chaining / optional operator (`?`)
 - No unnecessary type annotations — let inference work
+- No `!== undefined` / `!== null` — use truthy/falsy (`if (x)`, `if (!x)`)
+- Avoid unnecessary casting `as any` / `as Type`
+- Prefer `const name = (...) => {...}` over `function name(...) {...}`
 - Validate with `tsc --noEmit`, not just tests
 
 ## Architecture
@@ -32,9 +36,13 @@
 
 - JSON file DB (keep it simple)
 
-## Style
+## Communication
 
 - Extreme concision in messages and commit messages
+
+## Plans
+
+- End each plan with unresolved questions (if any), extremely concise
 
 ### Imports
 
